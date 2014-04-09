@@ -1,0 +1,54 @@
+
+.clearButton, .clearButton:HOVER, .clearButton:VISITED {
+	background-image: url("#{resource['images/btn-clear.png']}");
+	background-repeat: no-repeat;
+	width: 32px;
+	height: 32px;
+	border: none;
+	background-color: white;
+}
+
+.minusButton, .minusButton:HOVER, .minusButton:VISITED {
+	background-image: url("#{resource['images/btn-minus.png']}");
+	background-repeat: no-repeat;
+	width: 32px;
+	height: 32px;
+	border: none;
+	background-color: white;
+}
+
+.plusButton, .plusButton:HOVER, .plusButton:VISITED {
+	background-image: url("#{resource['images/btn-plus.png']}");
+	background-repeat: no-repeat;
+	width: 32px;
+	height: 32px;
+	border: none;
+	background-color: white;
+}
+
+.redoButton, .redoButton:HOVER, .redoButton:VISITED {
+	background-image: url("#{resource['images/btn-redo.png']}");
+	background-repeat: no-repeat;
+	width: 32px;
+	height: 32px;
+	border: none;
+	background-color: white;
+}
+
+.saveButton, .saveButton:HOVER, .saveButton:VISITED {
+	background-image: url("#{resource['images/btn-save.png']}");
+	background-repeat: no-repeat;
+	width: 32px;
+	height: 32px;
+	border: none;
+	background-color: white;
+}
+
+.undoButton, .undoButton:HOVER, .undoButton:VISITED {
+	background-image: url("#{resource['images/btn-undo.png']}");
+	background-repeat: no-repeat;
+	width: 32px;
+	height: 32px;
+	border: none;
+	background-color: white;
+}

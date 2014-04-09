@@ -1,0 +1,3 @@
+.dpCanvas:draw, .dpCanvas:active { 
+    cursor: url("#{resource['images/cur-pencil.png']}");
+}

@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:composite="http://java.sun.com/jsf/composite"
+	xmlns:p="http://primefaces.org/ui">
+
+
+<composite:interface>
+
+	<composite:attribute name="id" type="java.lang.String"/>
+	<composite:attribute name="jsonVar" type="java.lang.String"/>
+	<composite:attribute name="name" type="java.lang.String"
+		required="true" />
+	<composite:attribute name="drawable" type="java.lang.Boolean" />
+	<composite:attribute name="width" type="java.lang.Integer" />
+	<composite:attribute name="height" type="java.lang.Integer" />
+	<composite:attribute name="zIndex" type="java.lang.Integer" default="-2"/>
+	
+	<composite:attribute name="onSave"
+		method-signature="java.lang.String action()" required="false" />
+
+</composite:interface>
+
+<composite:implementation>
+	<h:head>
+		<h:outputStylesheet library="css" name="buttons.css" />
+		<h:outputStylesheet library="css" name="canvas.css" />
+		<h:outputScript library="js" name="DrawablePanel.js" />
+	</h:head>
+
+	<p:panel id="panel#{cc.attrs.id}"
+		style="width: #{cc.attrs.width + 50}px !important; position: relative;"
+		header="#{cc.attrs.name}" toggleable="#{not cc.attrs.drawable}"
+		toggleSpeed="500"
+		collapsed="#{(!cc.attrs.drawable and (empty cc.attrs.jsonVar))}">
+
+		<h:form id="dpForm#{cc.attrs.id}">
+
+			<table width="200">
+				<tr>
+					<td><h:commandButton styleClass="saveButton"
+							action="#{cc.attrs.onSave}"
+							onclick="setJsonString#{cc.attrs.id}();"
+							rendered="#{cc.attrs.drawable and (cc.attrs.jsonVar != null)}">
+						</h:commandButton></td>
+					<td><h:commandButton type="button" styleClass="clearButton"
+							onclick="panel#{cc.attrs.id}.resetCanvas('myCanvas');"
+							rendered="#{cc.attrs.drawable}">
+						</h:commandButton></td>
+					<td><h:commandButton type="button" styleClass="undoButton"
+							onclick="panel#{cc.attrs.id}.undo();"
+							rendered="#{cc.attrs.drawable}">
+						</h:commandButton></td>
+					<td><h:commandButton type="button" styleClass="redoButton"
+							onclick="panel#{cc.attrs.id}.redo();"
+							rendered="#{cc.attrs.drawable}">
+						</h:commandButton></td>
+				</tr>
+			</table>
+
+			<h:inputHidden id="#{cc.attrs.id}jsonHidden"
+				value="#{cc.attrs.jsonVar}" />
+
+			<br />
+
+			<canvas id="#{cc.attrs.id}" width="#{cc.attrs.width}"
+				height="#{cc.attrs.height}" style="border:1px solid #d3d3d3;"
+				class="dpCanvas" />
+
+			<script type="text/javascript" language="javascript">
+		var panel#{cc.attrs.id} = new HandwritenPanel();
+		panel#{cc.attrs.id}.init("#{cc.attrs.id}", #{cc.attrs.drawable}, getJsonString#{cc.attrs.id}());
+		
+		function setJsonString#{cc.attrs.id}(){
+			document.getElementById('#{cc.attrs.id}:dpForm#{cc.attrs.id}:#{cc.attrs.id}jsonHidden').value = panel#{cc.attrs.id}.asJSONString(); 
+		}
+		
+		function getJsonString#{cc.attrs.id}(){
+			return document.getElementById('#{cc.attrs.id}:dpForm#{cc.attrs.id}:#{cc.attrs.id}jsonHidden').value; 
+		}
+	</script>
+
+		</h:form>
+
+	</p:panel>
+	<p:draggable for="panel#{cc.attrs.id}" opacity="0.6"
+		handle=".ui-panel-titlebar" stack=".ui-panel" zindex="#{cc.attrs.zIndex}"/>
+		
+	<p:resizable for="panel#{cc.attrs.id}" minWidth="250" minHeight="250"
+		rendered="#{cc.attrs.drawable}" 
+		onResize="panel#{cc.attrs.id}.zoon(event);">
+	</p:resizable>
+
+</composite:implementation>
+
+</html>

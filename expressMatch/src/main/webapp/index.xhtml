@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:composite="http://java.sun.com/jsf/composite"
+	xmlns:dp="http://java.sun.com/jsf/composite/components/drawable"
+    xmlns:p="http://primefaces.org/ui">
+	
+	<h:head>
+			<h:outputStylesheet library="css" name="stack-menu-customized.css" />
+	</h:head>
+	
+	<h:body>
+		<dp:panel id="MyDP01" width="400" height="180" drawable="false"
+			jsonVar="#{drawablePanel.jsonLoadString}" name="Model Expression" zIndex="-2"/>
+		<dp:panel id="MyDP02" width="750" height="350" drawable="true" name="Drawable Panel"
+			jsonVar="#{drawablePanel.jsonString}" zIndex="2"
+			onSave="#{drawablePanel.saveStrokes}" />
+			
+		<p:stack  style="width:35px"   id="Menu" icon="/resources/images/icon-gear.png" >  
+    		<p:menuitem value="Free Hand" icon="/resources/images/free-hand.png"  url="#"/>
+    		<p:menuitem value="Evaluate Expressions" icon="/resources/images/math-rec.png" url="#"/>
+    		<p:menuitem value="Expressions Catalog" icon="/resources/images/math-catalog.png" url="#"/>
+    		<p:menuitem value="Results" icon="/resources/images/statistics-icon.png"  url="#"/>
+    	</p:stack>  
+	</h:body>
+</html>
