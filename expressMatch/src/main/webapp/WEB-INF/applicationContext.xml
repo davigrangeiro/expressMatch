@@ -11,11 +11,6 @@ http://www.springframework.org/schema/context/spring-context-3.1.xsd">
 <!-- 
 	<context:annotation-config />
  -->
- 
-	<!-- 
-	<bean id="userBo" class="com.mkyong.user.bo.impl.UserBoImpl"> 
-		<property name="name" value="mkyong.com" /> 
-	</bean> 
-	-->
+
 
 </beans>

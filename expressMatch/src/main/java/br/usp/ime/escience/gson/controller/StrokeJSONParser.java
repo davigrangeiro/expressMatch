@@ -3,7 +3,6 @@ package br.usp.ime.escience.gson.controller;
 import java.lang.reflect.Type;
 import java.util.Date;
 
-import javax.inject.Named;
 
 import org.springframework.stereotype.Service;
 

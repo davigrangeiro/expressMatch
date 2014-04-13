@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<beans:beans xmlns="http://www.springframework.org/schema/security"
+  xmlns:beans="http://www.springframework.org/schema/beans"
+  xmlns:sec="http://www.springframework.org/schema/security"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://www.springframework.org/schema/beans
+			          http://www.springframework.org/schema/beans/spring-beans.xsd
+			          http://www.springframework.org/schema/security
+			          http://www.springframework.org/schema/security/spring-security.xsd">
+
+    <http pattern="/resources/**" security="none" />
+
+    <!-- Configure filter -->
+    <http auto-config="true">
+ 
+        <!-- Don't set any role restrictions on login.jsp -->
+        <intercept-url pattern="/pages/login/login.faces" 
+        			   access="IS_AUTHENTICATED_ANONYMOUSLY" />
+        			   
+        <!-- Restrict access to ALL other pages -->
+        <intercept-url pattern="/**" 
+        			   access="ROLE_ADMIN" />
+ 
+        <!-- Set the login page and what to do if login fails -->
+        <form-login login-page="/pages/login/login.faces" 
+        			default-target-url="/default.faces"
+        			authentication-failure-url="/pages/login/login.faces?login_error" />
+ 		
+	</http>
+ 
+
+
+	<!-- data source for security-->
+	<beans:bean id="securityDataSource"
+		class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+		<beans:property name="driverClassName" value="com.mysql.jdbc.Driver" />
+		<beans:property name="url" value="jdbc:mysql://localhost/expressMatch" />
+		<beans:property name="username" value="expressMatch" />
+		<beans:property name="password" value="expressMatch" />
+	</beans:bean>
+
+	
+	<!-- Security database query settings -->
+	<sec:authentication-manager>
+		<sec:authentication-provider>
+       		<sec:password-encoder hash="sha"/>
+			
+			<sec:jdbc-user-service 
+				data-source-ref="securityDataSource"
+				users-by-username-query="SELECT nick as username, pass as password, enabled as enable FROM user WHERE nick=?"
+				authorities-by-username-query="SELECT u.nick as username, a.authority as authority FROM user u inner join authorities a on u.id = a.user_id WHERE u.nick=?" />
+				
+		</sec:authentication-provider>
+	</sec:authentication-manager>
+	
+
+</beans:beans>

@@ -7,7 +7,14 @@
       >
     <body>
 	    <ui:composition>
- 
+	    
+ 		<div style="position: fixed; bottom: 10px; left: 10px">                
+            <h:outputText value="Welcome #{userController.user.username} - "/>
+ 			<h:outputLink value="#{facesContext.externalContext.requestContextPath}/j_spring_security_logout">
+                    <h:outputText value="(Logout)"/>
+            </h:outputLink>
+ 		</div>
+ 		
 		<div style="position: fixed; bottom: 25px; right: 70px">
 			<h:graphicImage library="images" name="logo_vision.png" width="50%" height="50%" title="Computer Vision Research Group"/>
 		</div>
