@@ -9,7 +9,7 @@
 	    <ui:composition>
 	    
  		<div style="position: fixed; bottom: 10px; left: 10px">                
-            <h:outputText value="Welcome #{userController.user.username} - "/>
+            <h:outputText value="Welcome #{userController.user.nick} - "/>
  			<h:outputLink value="#{facesContext.externalContext.requestContextPath}/j_spring_security_logout">
                     <h:outputText value="(Logout)"/>
             </h:outputLink>
