@@ -5,6 +5,7 @@ package br.usp.ime.escience.expressmatch.model;
 import java.util.HashSet;
 import java.util.Set;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -57,7 +58,7 @@ public class UserInfo implements java.io.Serializable {
 		this.id = id;
 	}
 
-	@OneToOne(fetch = FetchType.LAZY)
+	@OneToOne(fetch = FetchType.LAZY, cascade=CascadeType.PERSIST)
 	@PrimaryKeyJoinColumn
 	public User getUser() {
 		return this.user;

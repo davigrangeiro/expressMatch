@@ -11,6 +11,7 @@ import javax.persistence.GeneratedValue;
 
 import static javax.persistence.GenerationType.IDENTITY;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
@@ -53,7 +54,7 @@ public class Expression implements java.io.Serializable {
 		this.id = id;
 	}
 
-	@ManyToOne(fetch = FetchType.LAZY)
+	@ManyToOne(fetch = FetchType.LAZY, cascade={CascadeType.PERSIST})
 	@JoinColumn(name = "user_info_id")
 	public UserInfo getUserInfo() {
 		return this.userInfo;
@@ -63,7 +64,7 @@ public class Expression implements java.io.Serializable {
 		this.userInfo = userInfo;
 	}
 
-	@ManyToOne(fetch = FetchType.LAZY)
+	@ManyToOne(fetch = FetchType.LAZY, cascade={CascadeType.PERSIST})
 	@JoinColumn(name = "expression_type_id")
 	public ExpressionType getExpressionType() {
 		return this.expressionType;
@@ -82,7 +83,7 @@ public class Expression implements java.io.Serializable {
 		this.label = label;
 	}
 
-	@OneToMany(fetch = FetchType.LAZY, mappedBy = "expression")
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "expression", cascade={CascadeType.PERSIST})
 	public Set<Symbol> getSymbols() {
 		return this.symbols;
 	}

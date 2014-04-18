@@ -19,6 +19,7 @@ import javax.xml.parsers.ParserConfigurationException;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Service;
 import org.xml.sax.SAXException;
 
 import br.usp.ime.escience.expressmatch.inkml.reader.dom.EMGTDomReaderUtil;
@@ -29,13 +30,14 @@ import br.usp.ime.escience.expressmatch.model.Expression;
 /**
  * The Class EMGTXStreamReader.
  */
+@Service
 public class EMGTDomReader implements ExpressMatchGrountTruthReader<File> {
 
 
 	private static final Logger logger = LoggerFactory.getLogger(EMGTDomReader.class);
 	
 	/** The path. */
-	private final String PATH = "database/expressions/inkml";
+	private final String PATH = "/home/davi/git/expressMatch/expressMatch/database/expressions/inkml";
 	
 	/** The all. */
 	private final String ALL = "ALL";
@@ -122,11 +124,11 @@ public class EMGTDomReader implements ExpressMatchGrountTruthReader<File> {
 		return ret;
 	}
 	
-	public static void main(String[] args) {
-		EMGTDomReader reader = new EMGTDomReader();
-		List<Expression> a = reader.getAllDataSet();
-		System.out.println();
-	}
+//	public static void main(String[] args) {
+//		EMGTDomReader reader = new EMGTDomReader();
+//		List<Expression> a = reader.getAllDataSet();
+//		System.out.println();
+//	}
 	
 	/* (non-Javadoc)
 	 * @see br.usp.ml.math.reader.generic.ExpressMatchGrountTruthReader#groupDataSet(java.util.List)

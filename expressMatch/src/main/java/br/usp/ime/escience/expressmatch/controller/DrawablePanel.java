@@ -11,8 +11,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.Scope;
 
-import br.usp.ime.escience.expressmatch.gson.controller.StrokeJSONParser;
 import br.usp.ime.escience.expressmatch.model.Stroke;
+import br.usp.ime.escience.expressmatch.service.gson.StrokeJSONParser;
 
 @Named
 @Scope("request")

@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+    
+    <h:body>
+				
+		<form action="expressMatch/j_spring_security_check" method="post">
+			<div style="right: 20px; position: fixed; top: 10px;">
+		    <h:panelGrid columns="6" cellpadding="5">
+                   <h:outputLabel for="j_username" value="Username:" />
+                   <h:inputText id="j_username" required="true"/>	
+                   <h:outputLabel for="j_password" value="Password:" />
+                   <h:inputSecret id="j_password" required="true"/>
+                   <h:commandButton value="Log in" />
+                   <h:commandButton value="Sign up" />
+            </h:panelGrid>
+            </div>
+		</form>
+		
+    </h:body>
+ 
+</html>
+   

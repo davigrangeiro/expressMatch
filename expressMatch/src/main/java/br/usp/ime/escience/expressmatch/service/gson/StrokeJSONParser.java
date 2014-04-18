@@ -1,4 +1,4 @@
-package br.usp.ime.escience.expressmatch.gson.controller;
+package br.usp.ime.escience.expressmatch.service.gson;
 
 import java.lang.reflect.Type;
 import java.util.Date;

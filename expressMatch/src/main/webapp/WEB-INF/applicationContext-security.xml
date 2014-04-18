@@ -15,19 +15,28 @@
     <http auto-config="true" use-expressions="true"> 
  
         <!-- Don't set any role restrictions on login.jsp -->
-        <intercept-url pattern="/pages/login/login.faces" 
+        <intercept-url pattern="/unsecure/login/login.faces" 
+        			   access="permitAll" 
+        			   requires-channel="https" />
+        			   
+        <!-- Don't set any role restrictions on unsecure section -->
+        <intercept-url pattern="/unsecure/**" 
         			   access="permitAll" />
         			   
-        <!-- Restrict access to ALL other pages -->
-        <intercept-url pattern="/**" 
-        			   access="hasRole('ROLE_ADMIN')" />
+        <!-- Don't set any role restrictions on resource folder -->
+        <intercept-url pattern="/javax.faces.resource/**" 
+        			   access="permitAll"/>
         			   
-        <sec:intercept-url pattern="/javax.faces.resource/**" access="permitAll"/>
+        <!-- Restrict access to ALL other pages -->
+        <intercept-url pattern="/pages/**" 
+        			   access="hasRole('ROLE_ADMIN')"
+        			   requires-channel="https" />
+        			   
         
         <!-- Set the login page and what to do if login fails -->
-        <form-login login-page="/pages/login/login.faces" 
+        <form-login login-page="/unsecure/login/login.faces" 
         			default-target-url="/default.faces"
-        			authentication-failure-url="/pages/login/login.faces?login_error" />
+        			authentication-failure-url="/unsecure/login/login.faces?login_error" />
  		
 	</http>
  

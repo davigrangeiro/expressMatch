@@ -156,11 +156,11 @@ public class EMGTDomReaderUtil {
 			
 			for (int i = 1; i < traceGroup.getLength(); i++) {
 				symbol = new Symbol();
+				symbol.setExpression(ret);
 				symbol.setStrokes(new HashSet<Stroke>());
 
 				Element e = (Element) traceGroup.item(i);
 				
-				symbol.setId(Integer.valueOf(e.getAttribute(EMGTDomReaderUtil.ID_XML)));
 				symbol.setLabel(getTextValue(e, EMGTDomReaderUtil.ANNOTATION));
 				symbol.setHref(getAtributeValueForNode(e, EMGTDomReaderUtil.ANNOTATION_XML, EMGTDomReaderUtil.HREF));
 				
@@ -168,6 +168,7 @@ public class EMGTDomReaderUtil {
 				for (Integer id : strokeIds) {
 					for (Stroke stroke : strokes) {
 						if(id == stroke.getStrokeId()){
+							stroke.setSymbol(symbol);
 							symbol.getStrokes().add(stroke);
 							break;
 						}

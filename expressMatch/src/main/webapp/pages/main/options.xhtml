@@ -3,20 +3,20 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
 	xmlns:h="http://java.sun.com/jsf/html"
-    xmlns:ui="http://java.sun.com/jsf/facelets" 
+      xmlns:ui="http://java.sun.com/jsf/facelets" 
 	xmlns:f="http://java.sun.com/jsf/core"
 	xmlns:composite="http://java.sun.com/jsf/composite"
-    xmlns:p="http://primefaces.org/ui"
-	xmlns:dp="http://java.sun.com/jsf/composite/components/drawable">
-	
+    xmlns:p="http://primefaces.org/ui">
     <h:body>
  
     	<ui:composition template="/pages/main/template/template.xhtml">
  
     		<ui:define name="content">
-    			<dp:panel id="MyDP02" width="500" height="350" drawable="true" name="Free Hand Panel" />
-    		</ui:define>
- 
+				<h:form>
+				<h:commandButton action="#{configController.importDataBase}" value="Import complete dataset"></h:commandButton>
+				</h:form>
+			</ui:define>
+						
     	</ui:composition>
  
     </h:body>
