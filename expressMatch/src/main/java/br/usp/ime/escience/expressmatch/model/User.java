@@ -136,8 +136,6 @@ public class User implements java.io.Serializable {
 				+ ((insertDate == null) ? 0 : insertDate.hashCode());
 		result = prime * result + ((nick == null) ? 0 : nick.hashCode());
 		result = prime * result + ((pass == null) ? 0 : pass.hashCode());
-		result = prime * result
-				+ ((userInfo == null) ? 0 : userInfo.hashCode());
 		return result;
 	}
 
@@ -194,14 +192,22 @@ public class User implements java.io.Serializable {
 		} else if (!pass.equals(other.pass)) {
 			return false;
 		}
-		if (userInfo == null) {
-			if (other.userInfo != null) {
-				return false;
-			}
-		} else if (!userInfo.equals(other.userInfo)) {
-			return false;
-		}
 		return true;
 	}
+
+	/* (non-Javadoc)
+	 * @see java.lang.Object#toString()
+	 */
+	@Override
+	public String toString() {
+		StringBuilder builder = new StringBuilder();
+		builder.append("User [id=").append(id).append(", nick=").append(nick)
+				.append(", pass=").append(pass).append(", enabled=")
+				.append(enabled).append(", insertDate=").append(insertDate)
+				.append(", userInfo=").append(userInfo).append("]");
+		return builder.toString();
+	}
+
+
 
 }

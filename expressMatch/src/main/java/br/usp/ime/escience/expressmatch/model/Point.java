@@ -2,11 +2,14 @@ package br.usp.ime.escience.expressmatch.model;
 
 
 import java.util.Date;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
+
 import static javax.persistence.GenerationType.IDENTITY;
+
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
@@ -89,6 +92,18 @@ public class Point implements java.io.Serializable {
 
 	public void setTime(Date time) {
 		this.time = time;
+	}
+
+	/* (non-Javadoc)
+	 * @see java.lang.Object#toString()
+	 */
+	@Override
+	public String toString() {
+		StringBuilder builder = new StringBuilder();
+		builder.append("Point [id=").append(id).append(", stroke=")
+				.append(stroke).append(", x=").append(x).append(", y=")
+				.append(y).append(", time=").append(time).append("]");
+		return builder.toString();
 	}
 
 }

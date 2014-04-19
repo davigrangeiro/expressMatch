@@ -160,4 +160,16 @@ public class Institution implements java.io.Serializable {
 		return true;
 	}
 
+	/* (non-Javadoc)
+	 * @see java.lang.Object#toString()
+	 */
+	@Override
+	public String toString() {
+		StringBuilder builder = new StringBuilder();
+		builder.append("Institution [id=").append(id).append(", name=")
+				.append(name).append(", acronym=").append(acronym)
+				.append(", nationality=").append(nationality).append("]");
+		return builder.toString();
+	}
+
 }

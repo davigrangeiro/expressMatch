@@ -79,7 +79,7 @@ public class EMGTDomReaderUtil {
 	private static final String ANNOTATION_XML = "annotationXML";
 	
 	/** The Constant HREF. */
-	private static final String HREF = "HREF";
+	private static final String HREF = "href";
 	
 	/**
 	 * Read.
@@ -109,6 +109,7 @@ public class EMGTDomReaderUtil {
 				if(EMGTDomReaderUtil.EXPRESSIION.equalsIgnoreCase(type) &&
 						  e.getFirstChild() != null && e.getFirstChild().getNodeValue() != null){
 					eType.setId(Integer.valueOf(e.getFirstChild().getNodeValue()));
+					ret.setExpressionId(Integer.valueOf(e.getFirstChild().getNodeValue()));
 				}else if(EMGTDomReaderUtil.WRITER.equalsIgnoreCase(type) &&
 						  e.getFirstChild() != null && e.getFirstChild().getNodeValue() != null){
 					user.setName(e.getFirstChild().getNodeValue());
@@ -143,6 +144,7 @@ public class EMGTDomReaderUtil {
 					p.setX(Float.valueOf(tPoints[0]));
 					p.setY(Float.valueOf(tPoints[1]));
 					p.setTime(new Date(Long.valueOf(tPoints[2])));
+					p.setStroke(t);
 					t.getPoints().add(p);
 				}
 				

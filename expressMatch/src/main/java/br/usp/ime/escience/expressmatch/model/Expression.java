@@ -17,6 +17,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 @Entity
 @Table(name = "expression", catalog = "expressMatch")
@@ -29,8 +30,9 @@ public class Expression implements java.io.Serializable {
 	private ExpressionType expressionType;
 	private String label;
 	private Set<Symbol> symbols = new HashSet<>(0);
-	private Set<ExpressionType> expressionTypes = new HashSet<>(0);
 
+	private Integer expressionId;
+	
 	public Expression() {
 	}
 
@@ -40,7 +42,6 @@ public class Expression implements java.io.Serializable {
 		this.expressionType = expressionType;
 		this.label = label;
 		this.symbols = symbols;
-		this.expressionTypes = expressionTypes;
 	}
 
 	@Id
@@ -54,7 +55,7 @@ public class Expression implements java.io.Serializable {
 		this.id = id;
 	}
 
-	@ManyToOne(fetch = FetchType.LAZY, cascade={CascadeType.PERSIST})
+	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "user_info_id")
 	public UserInfo getUserInfo() {
 		return this.userInfo;
@@ -64,7 +65,7 @@ public class Expression implements java.io.Serializable {
 		this.userInfo = userInfo;
 	}
 
-	@ManyToOne(fetch = FetchType.LAZY, cascade={CascadeType.PERSIST})
+	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "expression_type_id")
 	public ExpressionType getExpressionType() {
 		return this.expressionType;
@@ -92,14 +93,6 @@ public class Expression implements java.io.Serializable {
 		this.symbols = symbols;
 	}
 
-	@OneToMany(fetch = FetchType.LAZY, mappedBy = "expression")
-	public Set<ExpressionType> getExpressionTypes() {
-		return this.expressionTypes;
-	}
-
-	public void setExpressionTypes(Set<ExpressionType> expressionTypes) {
-		this.expressionTypes = expressionTypes;
-	}
 
 	/* (non-Javadoc)
 	 * @see java.lang.Object#hashCode()
@@ -108,10 +101,6 @@ public class Expression implements java.io.Serializable {
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result
-				+ ((expressionType == null) ? 0 : expressionType.hashCode());
-		result = prime * result
-				+ ((expressionTypes == null) ? 0 : expressionTypes.hashCode());
 		result = prime * result + ((id == null) ? 0 : id.hashCode());
 		result = prime * result + ((label == null) ? 0 : label.hashCode());
 		result = prime * result + ((symbols == null) ? 0 : symbols.hashCode());
@@ -135,20 +124,6 @@ public class Expression implements java.io.Serializable {
 			return false;
 		}
 		Expression other = (Expression) obj;
-		if (expressionType == null) {
-			if (other.expressionType != null) {
-				return false;
-			}
-		} else if (!expressionType.equals(other.expressionType)) {
-			return false;
-		}
-		if (expressionTypes == null) {
-			if (other.expressionTypes != null) {
-				return false;
-			}
-		} else if (!expressionTypes.equals(other.expressionTypes)) {
-			return false;
-		}
 		if (id == null) {
 			if (other.id != null) {
 				return false;
@@ -179,5 +154,34 @@ public class Expression implements java.io.Serializable {
 		}
 		return true;
 	}
+
+	/**
+	 * @return the expressionId
+	 */
+	@Transient
+	public Integer getExpressionId() {
+		return expressionId;
+	}
+
+	/**
+	 * @param expressionId the expressionId to set
+	 */
+	public void setExpressionId(Integer expressionId) {
+		this.expressionId = expressionId;
+	}
+
+	/* (non-Javadoc)
+	 * @see java.lang.Object#toString()
+	 */
+	@Override
+	public String toString() {
+		StringBuilder builder = new StringBuilder();
+		builder.append("Expression [id=").append(id).append(", userInfo=")
+				.append(userInfo).append(", expressionType=")
+				.append(expressionType).append(", label=").append(label)
+				.append(", expressionId=").append(expressionId).append("]");
+		return builder.toString();
+	}
+
 
 }

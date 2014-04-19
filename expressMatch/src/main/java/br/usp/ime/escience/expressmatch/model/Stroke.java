@@ -11,6 +11,7 @@ import javax.persistence.GeneratedValue;
 
 import static javax.persistence.GenerationType.IDENTITY;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
@@ -83,7 +84,7 @@ public class Stroke implements java.io.Serializable {
 		this.rbPoint = rbPoint;
 	}
 
-	@OneToMany(fetch = FetchType.LAZY, mappedBy = "stroke")
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "stroke", cascade={CascadeType.PERSIST})
 	public Set<Point> getPoints() {
 		return this.points;
 	}
@@ -120,7 +121,6 @@ public class Stroke implements java.io.Serializable {
 		result = prime * result + ((rbPoint == null) ? 0 : rbPoint.hashCode());
 		result = prime * result
 				+ ((strokeId == null) ? 0 : strokeId.hashCode());
-		result = prime * result + ((symbol == null) ? 0 : symbol.hashCode());
 		return result;
 	}
 
@@ -174,13 +174,21 @@ public class Stroke implements java.io.Serializable {
 		} else if (!strokeId.equals(other.strokeId)) {
 			return false;
 		}
-		if (symbol == null) {
-			if (other.symbol != null) {
-				return false;
-			}
-		} else if (!symbol.equals(other.symbol)) {
-			return false;
-		}
 		return true;
 	}
+
+	/* (non-Javadoc)
+	 * @see java.lang.Object#toString()
+	 */
+	@Override
+	public String toString() {
+		StringBuilder builder = new StringBuilder();
+		builder.append("Stroke [id=").append(id).append(", symbol=")
+				.append(symbol).append(", ltPoint=").append(ltPoint)
+				.append(", rbPoint=").append(rbPoint).append(", strokeId=")
+				.append(strokeId).append("]");
+		return builder.toString();
+	}
+
+	
 }

@@ -16,8 +16,7 @@
  
         <!-- Don't set any role restrictions on login.jsp -->
         <intercept-url pattern="/unsecure/login/login.faces" 
-        			   access="permitAll" 
-        			   requires-channel="https" />
+        			   access="permitAll"/>
         			   
         <!-- Don't set any role restrictions on unsecure section -->
         <intercept-url pattern="/unsecure/**" 
@@ -29,8 +28,7 @@
         			   
         <!-- Restrict access to ALL other pages -->
         <intercept-url pattern="/pages/**" 
-        			   access="hasRole('ROLE_ADMIN')"
-        			   requires-channel="https" />
+        			   access="hasRole('ROLE_ADMIN')"/>
         			   
         
         <!-- Set the login page and what to do if login fails -->

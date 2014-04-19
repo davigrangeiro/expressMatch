@@ -1,7 +1,5 @@
 package br.usp.ime.escience.expressmatch.model;
 
-
-
 import java.util.HashSet;
 import java.util.Set;
 
@@ -182,6 +180,19 @@ public class UserInfo implements java.io.Serializable {
 			return false;
 		}
 		return true;
+	}
+
+	/* (non-Javadoc)
+	 * @see java.lang.Object#toString()
+	 */
+	@Override
+	public String toString() {
+		StringBuilder builder = new StringBuilder();
+		builder.append("UserInfo [id=").append(id).append(", user=")
+				.append(user).append(", institution=").append(institution)
+				.append(", name=").append(name).append(", nationaity=")
+				.append(nationaity).append("]");
+		return builder.toString();
 	}
 
 }

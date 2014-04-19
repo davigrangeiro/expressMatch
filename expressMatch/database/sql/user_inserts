@@ -1,0 +1,128 @@
+
+insert into institution (name, acronym, nationality) values ('Institute of Mathematics And Statistics', 'IME', 'Brazilian');
+
+insert into user(nick, pass, enabled) values('davi', SHA1('admin'), true);
+insert into authorities(user_id, authority) values (2, 'ROLE_ADMIN');
+insert into user_info(id, name, instituition_id, nationaity) values (2, 'Davi Souto Grangeiro', 1, 'Brazilian');
+
+insert into user(nick, pass, enabled) values('root', SHA1('admin'), true);
+insert into authorities(user_id, authority) values (3, 'ROLE_ADMIN');
+insert into user_info(id, name, instituition_id, nationaity) values (3, 'Adiministrador', 1, 'Brazilian');
+
+insert into user(nick, pass, enabled) values('alfonso', SHA1('admin'), true);
+insert into authorities(user_id, authority) values (4, 'ROLE_USER');
+insert into user_info(id, name, instituition_id, nationaity) values (4, 'Alfonso', 1, 'Brazilian');
+
+insert into user(nick, pass, enabled) values('carlos', SHA1('admin'), true);
+insert into authorities(user_id, authority) values (5, 'ROLE_USER');
+insert into user_info(id, name, instituition_id, nationaity) values (5, 'Carlos', 1, 'Brazilian');
+
+
+insert into user(nick, pass, enabled) values('caue', SHA1('admin'), true);
+insert into authorities(user_id, authority) values (6, 'ROLE_USER');
+insert into user_info(id, name, instituition_id, nationaity) values (6, 'Caue', 1, 'Brazilian');
+
+
+insert into user(nick, pass, enabled) values('david', SHA1('admin'), true);
+insert into authorities(user_id, authority) values (7, 'ROLE_USER');
+insert into user_info(id, name, instituition_id, nationaity) values (7, 'David', 1, 'Brazilian');
+
+
+insert into user(nick, pass, enabled) values('edwin', SHA1('admin'), true);
+insert into authorities(user_id, authority) values (8, 'ROLE_USER');
+insert into user_info(id, name, instituition_id, nationaity) values (8, 'Edwin', 1, 'Brazilian');
+
+
+insert into user(nick, pass, enabled) values('fabricio', SHA1('admin'), true);
+insert into authorities(user_id, authority) values (9, 'ROLE_USER');
+insert into user_info(id, name, instituition_id, nationaity) values (9, 'Fabricio', 1, 'Brazilian');
+
+
+insert into user(nick, pass, enabled) values('frank', SHA1('admin'), true);
+insert into authorities(user_id, authority) values (10, 'ROLE_USER');
+insert into user_info(id, name, instituition_id, nationaity) values (10, 'Frank', 1, 'Brazilian');
+
+
+insert into user(nick, pass, enabled) values('hirata', SHA1('admin'), true);
+insert into authorities(user_id, authority) values (11, 'ROLE_USER');
+insert into user_info(id, name, instituition_id, nationaity) values (11, 'Roberto Hirata', 1, 'Brazilian');
+
+
+insert into user(nick, pass, enabled) values('leissi', SHA1('admin'), true);
+insert into authorities(user_id, authority) values (12, 'ROLE_USER');
+insert into user_info(id, name, instituition_id, nationaity) values (12, 'Leissi', 1, 'Brazilian');
+
+
+insert into user(nick, pass, enabled) values('rosario', SHA1('admin'), true);
+insert into authorities(user_id, authority) values (13, 'ROLE_USER');
+insert into user_info(id, name, instituition_id, nationaity) values (13, 'Rosario', 1, 'Brazilian');
+
+insert into user(nick, pass, enabled) values('nina', SHA1('admin'), true);
+insert into authorities(user_id, authority) values (14, 'ROLE_ADMIN');
+insert into user_info(id, name, instituition_id, nationaity) values (14, 'Nina Hirata', 1, 'Brazilian');
+
+insert into user(nick, pass, enabled) values('daniel', SHA1('admin'), true);
+insert into authorities(user_id, authority) values (15, 'ROLE_USER');
+insert into user_info(id, name, instituition_id, nationaity) values (15, 'Daniel', 1, 'Brazilian');
+
+insert into user(nick, pass, enabled) values('herbert', SHA1('admin'), true);
+insert into authorities(user_id, authority) values (16, 'ROLE_USER');
+insert into user_info(id, name, instituition_id, nationaity) values (16, 'Herbert', 1, 'Brazilian');
+
+insert into user(nick, pass, enabled) values('jorge', SHA1('admin'), true);
+insert into authorities(user_id, authority) values (17, 'ROLE_USER');
+insert into user_info(id, name, instituition_id, nationaity) values (17, 'Jorge', 1, 'Brazilian');
+
+insert into user(nick, pass, enabled) values('leo', SHA1('admin'), true);
+insert into authorities(user_id, authority) values (18, 'ROLE_USER');
+insert into user_info(id, name, instituition_id, nationaity) values (18, 'Leo', 1, 'Brazilian');
+
+insert into user(nick, pass, enabled) values('maira', SHA1('admin'), true);
+insert into authorities(user_id, authority) values (19, 'ROLE_USER');
+insert into user_info(id, name, instituition_id, nationaity) values (19, 'Maira', 1, 'Brazilian');
+
+insert into user(nick, pass, enabled) values('miguel', SHA1('admin'), true);
+insert into authorities(user_id, authority) values (20, 'ROLE_USER');
+insert into user_info(id, name, instituition_id, nationaity) values (20, 'miguel', 1, 'Brazilian');
+
+insert into user(nick, pass, enabled) values('mijail', SHA1('admin'), true);
+insert into authorities(user_id, authority) values (21, 'ROLE_USER');
+insert into user_info(id, name, instituition_id, nationaity) values (21, 'Mijail', 1, 'Brazilian');
+
+insert into user(nick, pass, enabled) values('danilo', SHA1('admin'), true);
+insert into authorities(user_id, authority) values (22, 'ROLE_USER');
+insert into user_info(id, name, instituition_id, nationaity) values (22, 'Danilo', 1, 'Brazilian');
+
+insert into user(nick, pass, enabled) values('fujita', SHA1('admin'), true);
+insert into authorities(user_id, authority) values (23, 'ROLE_USER');
+insert into user_info(id, name, instituition_id, nationaity) values (23, 'Fujita', 1, 'Brazilian');
+
+insert into user(nick, pass, enabled) values('lucelia', SHA1('admin'), true);
+insert into authorities(user_id, authority) values (24, 'ROLE_USER');
+insert into user_info(id, name, instituition_id, nationaity) values (24, 'Lucelia', 1, 'Brazilian');
+
+insert into user(nick, pass, enabled) values('fabio', SHA1('admin'), true);
+insert into authorities(user_id, authority) values (25, 'ROLE_USER');
+insert into user_info(id, name, instituition_id, nationaity) values (25, 'Fabio', 1, 'Brazilian');
+
+insert into user(nick, pass, enabled) values('bruno', SHA1('admin'), true);
+insert into authorities(user_id, authority) values (26, 'ROLE_USER');
+insert into user_info(id, name, instituition_id, nationaity) values (26, 'Bruno', 1, 'Brazilian');
+
+insert into user(nick, pass, enabled) values('willian', SHA1('admin'), true);
+insert into authorities(user_id, authority) values (27, 'ROLE_USER');
+insert into user_info(id, name, instituition_id, nationaity) values (27, 'Willian', 1, 'Brazilian');
+
+insert into user(nick, pass, enabled) values('silas', SHA1('admin'), true);
+insert into authorities(user_id, authority) values (28, 'ROLE_USER');
+insert into user_info(id, name, instituition_id, nationaity) values (28, 'Silas', 1, 'Brazilian');
+
+insert into user(nick, pass, enabled) values('miguel2', SHA1('admin'), true);
+insert into authorities(user_id, authority) values (29, 'ROLE_USER');
+insert into user_info(id, name, instituition_id, nationaity) values (29, 'Miguel 2', 1, 'Brazilian');
+
+
+select u.id, u.nick, i.name, a.authority, d.acronym from user u inner join user_info i on u.id = i.id inner join authorities a on u.id = a.user_id inner join institution d on i.instituition_id = d.id;
+select * from authorities;
+select * from user_info;
+select * from institution

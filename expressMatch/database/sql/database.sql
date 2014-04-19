@@ -2,12 +2,15 @@ SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0;
 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0;
 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='TRADITIONAL,ALLOW_INVALID_DATES';
 
+DROP SCHEMA IF EXISTS `expressMatch` ;
 CREATE SCHEMA IF NOT EXISTS `expressMatch` DEFAULT CHARACTER SET latin1 ;
 USE `expressMatch` ;
 
 -- -----------------------------------------------------
 -- Table `expressMatch`.`user`
 -- -----------------------------------------------------
+DROP TABLE IF EXISTS `expressMatch`.`user` ;
+
 CREATE  TABLE IF NOT EXISTS `expressMatch`.`user` (
   `id` INT(11) NOT NULL AUTO_INCREMENT ,
   `nick` VARCHAR(50) NOT NULL ,
@@ -24,6 +27,8 @@ DEFAULT CHARACTER SET = latin1;
 -- -----------------------------------------------------
 -- Table `expressMatch`.`authorities`
 -- -----------------------------------------------------
+DROP TABLE IF EXISTS `expressMatch`.`authorities` ;
+
 CREATE  TABLE IF NOT EXISTS `expressMatch`.`authorities` (
   `id` INT(11) NOT NULL AUTO_INCREMENT ,
   `user_id` INT(11) NOT NULL ,
@@ -42,13 +47,15 @@ DEFAULT CHARACTER SET = latin1;
 -- -----------------------------------------------------
 -- Table `expressMatch`.`expression_type`
 -- -----------------------------------------------------
+DROP TABLE IF EXISTS `expressMatch`.`expression_type` ;
+
 CREATE  TABLE IF NOT EXISTS `expressMatch`.`expression_type` (
   `id` INT(11) NOT NULL AUTO_INCREMENT ,
   `name` VARCHAR(50) NULL ,
   `description` VARCHAR(512) NULL ,
   `label` VARCHAR(1024) NULL ,
   `model_expression_id` INT(11) NULL ,
-  `insert_date` TIMESTAMP NOT NULL DEFAULT 'CURRENT_TIMESTAMP' ,
+  `insert_date` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ,
   PRIMARY KEY (`id`) ,
   INDEX `model_expression_fk_idx` (`model_expression_id` ASC) ,
   CONSTRAINT `model_expression_fk`
@@ -62,12 +69,14 @@ ENGINE = InnoDB;
 -- -----------------------------------------------------
 -- Table `expressMatch`.`institution`
 -- -----------------------------------------------------
+DROP TABLE IF EXISTS `expressMatch`.`institution` ;
+
 CREATE  TABLE IF NOT EXISTS `expressMatch`.`institution` (
   `id` INT(8) NOT NULL AUTO_INCREMENT ,
   `name` VARCHAR(256) NOT NULL ,
   `acronym` VARCHAR(45) NULL ,
   `nationality` VARCHAR(45) NOT NULL ,
-  `insert_date` TIMESTAMP NOT NULL DEFAULT 'CURRENT_TIMESTAMP' ,
+  `insert_date` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ,
   PRIMARY KEY (`id`) )
 ENGINE = InnoDB;
 
@@ -75,6 +84,8 @@ ENGINE = InnoDB;
 -- -----------------------------------------------------
 -- Table `expressMatch`.`user_info`
 -- -----------------------------------------------------
+DROP TABLE IF EXISTS `expressMatch`.`user_info` ;
+
 CREATE  TABLE IF NOT EXISTS `expressMatch`.`user_info` (
   `id` INT(11) NOT NULL AUTO_INCREMENT ,
   `name` VARCHAR(256) NOT NULL ,
@@ -99,6 +110,8 @@ ENGINE = InnoDB;
 -- -----------------------------------------------------
 -- Table `expressMatch`.`expression`
 -- -----------------------------------------------------
+DROP TABLE IF EXISTS `expressMatch`.`expression` ;
+
 CREATE  TABLE IF NOT EXISTS `expressMatch`.`expression` (
   `id` INT(11) NOT NULL AUTO_INCREMENT ,
   `label` VARCHAR(1024) NULL ,
@@ -124,11 +137,14 @@ ENGINE = InnoDB;
 -- -----------------------------------------------------
 -- Table `expressMatch`.`symbol`
 -- -----------------------------------------------------
+DROP TABLE IF EXISTS `expressMatch`.`symbol` ;
+
 CREATE  TABLE IF NOT EXISTS `expressMatch`.`symbol` (
   `id` INT(11) NOT NULL AUTO_INCREMENT ,
   `label` VARCHAR(40) NULL ,
   `expression_id` INT(11) NOT NULL ,
   `insert_date` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ,
+  `href` VARCHAR(20) NOT NULL ,
   PRIMARY KEY (`id`) ,
   INDEX `expression_symbol_fk_idx` (`expression_id` ASC) ,
   CONSTRAINT `expression_symbol_fk`
@@ -142,12 +158,15 @@ ENGINE = InnoDB;
 -- -----------------------------------------------------
 -- Table `expressMatch`.`stroke`
 -- -----------------------------------------------------
+DROP TABLE IF EXISTS `expressMatch`.`stroke` ;
+
 CREATE  TABLE IF NOT EXISTS `expressMatch`.`stroke` (
   `id` INT(11) NOT NULL AUTO_INCREMENT ,
   `lt_point` FLOAT NULL ,
   `rb_point` FLOAT NULL ,
   `symbol_id` INT(11) NOT NULL ,
   `insert_date` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ,
+  `stroke_id` INT(3) NOT NULL ,
   PRIMARY KEY (`id`) ,
   INDEX `symbol_stroke_fk_idx` (`symbol_id` ASC) ,
   CONSTRAINT `symbol_stroke_fk`
@@ -161,6 +180,8 @@ ENGINE = InnoDB;
 -- -----------------------------------------------------
 -- Table `expressMatch`.`point`
 -- -----------------------------------------------------
+DROP TABLE IF EXISTS `expressMatch`.`point` ;
+
 CREATE  TABLE IF NOT EXISTS `expressMatch`.`point` (
   `id` INT(11) NOT NULL AUTO_INCREMENT ,
   `x` FLOAT NOT NULL ,

@@ -10,7 +10,7 @@
 	<name>Express Match</name>
 
 	<properties>
-		<spring.version>3.1.2.RELEASE</spring.version>
+		<spring.version>3.2.8.RELEASE</spring.version>
 		<spring.security.version>3.1.0.RELEASE</spring.security.version>
 		<sfl4j.version>1.5.8</sfl4j.version>
 	</properties>
@@ -60,6 +60,13 @@
 			<artifactId>spring-jdbc</artifactId>
 			<version>${spring.version}</version>
 		</dependency>
+		
+		<!-- Spring Data JPA --> 
+	    <dependency>
+	        <groupId>org.springframework.data</groupId>
+	        <artifactId>spring-data-jpa</artifactId>
+	        <version>1.5.2.RELEASE</version>
+	    </dependency>
 
 		<!-- Spring Security -->
 		<dependency>
@@ -219,13 +226,6 @@
 			<groupId>log4j</groupId>
 			<artifactId>log4j</artifactId>
 			<version>1.2.14</version>
-		</dependency>
-
-		<!-- Javassist --> 
-		<dependency>
-			<groupId>org.javassist</groupId>
-			<artifactId>javassist</artifactId>
-			<version>3.18.1-GA</version>
 		</dependency>
 
 	</dependencies>

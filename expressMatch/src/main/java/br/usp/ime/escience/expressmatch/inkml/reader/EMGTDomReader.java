@@ -187,9 +187,13 @@ public class EMGTDomReader implements ExpressMatchGrountTruthReader<File> {
 	 */
 	private List<Expression> getTraceSetsFromFiles(List<File> files){
 		List<Expression> ret = new ArrayList<Expression>();
+		Expression toAdd = null;
 		for (File file : files) {
 			logger.info(file.getName());
-			ret.add(this.read(file));
+			toAdd = this.read(file);
+			if(null != toAdd){
+				ret.add(toAdd);
+			}
 		}
 		return ret;
 	}

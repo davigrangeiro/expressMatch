@@ -139,4 +139,16 @@ public class Authorities implements java.io.Serializable {
 		return true;
 	}
 
+	/* (non-Javadoc)
+	 * @see java.lang.Object#toString()
+	 */
+	@Override
+	public String toString() {
+		StringBuilder builder = new StringBuilder();
+		builder.append("Authorities [id=").append(id).append(", user=")
+				.append(user).append(", authority=").append(authority)
+				.append(", insertDate=").append(insertDate).append("]");
+		return builder.toString();
+	}
+
 }

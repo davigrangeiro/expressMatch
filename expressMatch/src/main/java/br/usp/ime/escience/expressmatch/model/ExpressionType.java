@@ -4,13 +4,10 @@ package br.usp.ime.escience.expressmatch.model;
 import java.util.HashSet;
 import java.util.Set;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-
-import static javax.persistence.GenerationType.IDENTITY;
-
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
@@ -43,7 +40,6 @@ public class ExpressionType implements java.io.Serializable {
 	}
 
 	@Id
-	@GeneratedValue(strategy = IDENTITY)
 	@Column(name = "id", unique = true, nullable = false)
 	public Integer getId() {
 		return this.id;
@@ -110,8 +106,6 @@ public class ExpressionType implements java.io.Serializable {
 				+ ((description == null) ? 0 : description.hashCode());
 		result = prime * result
 				+ ((expression == null) ? 0 : expression.hashCode());
-		result = prime * result
-				+ ((expressions == null) ? 0 : expressions.hashCode());
 		result = prime * result + ((id == null) ? 0 : id.hashCode());
 		result = prime * result + ((label == null) ? 0 : label.hashCode());
 		result = prime * result + ((name == null) ? 0 : name.hashCode());
@@ -147,13 +141,6 @@ public class ExpressionType implements java.io.Serializable {
 		} else if (!expression.equals(other.expression)) {
 			return false;
 		}
-		if (expressions == null) {
-			if (other.expressions != null) {
-				return false;
-			}
-		} else if (!expressions.equals(other.expressions)) {
-			return false;
-		}
 		if (id == null) {
 			if (other.id != null) {
 				return false;
@@ -177,5 +164,20 @@ public class ExpressionType implements java.io.Serializable {
 		}
 		return true;
 	}
+
+	/* (non-Javadoc)
+	 * @see java.lang.Object#toString()
+	 */
+	@Override
+	public String toString() {
+		StringBuilder builder = new StringBuilder();
+		builder.append("ExpressionType [id=").append(id)
+				.append(", expression=").append(expression).append(", name=")
+				.append(name).append(", description=").append(description)
+				.append(", label=").append(label).append("]");
+		return builder.toString();
+	}
+
+
 
 }

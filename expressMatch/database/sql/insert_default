@@ -10,4 +10,5 @@ alter table stroke add stroke_id int(3) not null;
 alter table symbol add href varchar(20) not null;
 
 
-select * from expression;
+select char_length(label) from expression;
+
