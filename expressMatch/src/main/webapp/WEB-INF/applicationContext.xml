@@ -2,7 +2,6 @@
     xmlns:p="http://www.springframework.org/schema/p" 
     xmlns:tx="http://www.springframework.org/schema/tx"
     xmlns:context="http://www.springframework.org/schema/context"
-<<<<<<< HEAD
     xmlns:jpa="http://www.springframework.org/schema/data/jpa"
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:schemaLocation="http://www.springframework.org/schema/beans
@@ -13,31 +12,11 @@
 						http://www.springframework.org/schema/context/spring-context-3.1.xsd
        					http://www.springframework.org/schema/data/jpa
    						http://www.springframework.org/schema/data/jpa/spring-jpa-1.0.xsd">
-=======
-    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xsi:schemaLocation="http://www.springframework.org/schema/beans
-						http://www.springframework.org/schema/beans/spring-beans-3.1.xsd
-						http://www.springframework.org/schema/tx
-						http://www.springframework.org/schema/tx/spring-tx-3.1.xsd
-						http://www.springframework.org/schema/context
-						http://www.springframework.org/schema/context/spring-context-3.1.xsd">
->>>>>>> branch 'master' of https://github.com/davigrangeiro/expressMatch.git
     
 	<context:component-scan base-package="br.usp.ime.escience" />
 
-<<<<<<< HEAD
     <jpa:repositories base-package="br.usp.ime.escience.expressmatch.model.repository"/>
-=======
-    <bean id="expressMatchDataSource" 
-          class="org.springframework.jdbc.datasource.DriverManagerDataSource"
-          p:driverClassName="com.mysql.jdbc.Driver" 
-          p:url="jdbc:mysql://localhost:3306/expressMatch"
-          p:username="expressMatch" 
-          p:password="expressMatch">
-    </bean>
->>>>>>> branch 'master' of https://github.com/davigrangeiro/expressMatch.git
 
-<<<<<<< HEAD
     <bean id="expressMatchDataSource" 
           class="org.springframework.jdbc.datasource.DriverManagerDataSource"
           p:driverClassName="com.mysql.jdbc.Driver" 
@@ -45,7 +24,7 @@
           p:username="expressMatch" 
           p:password="expressMatch">
     </bean>
-=======
+
 	<bean id="entityManagerFactory"
 		class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean">
 		<property name="dataSource" ref="expressMatchDataSource" />
@@ -54,36 +33,12 @@
 		</property>
 	</bean>
 	
-	<!-- gerenciamento da transação pelo spring -->
+
 	<bean id="transactionManager" class="org.springframework.orm.jpa.JpaTransactionManager">
 		<property name="entityManagerFactory" ref="entityManagerFactory" />
-	</bean>
->>>>>>> branch 'master' of https://github.com/davigrangeiro/expressMatch.git
-
-<<<<<<< HEAD
-	<bean class="org.springframework.orm.jpa.JpaTransactionManager"
-		id="transactionManager">
-		<property name="entityManagerFactory" ref="entityManagerFactory" />
-		<property name="jpaDialect">
-			<bean class="org.springframework.orm.jpa.vendor.HibernateJpaDialect" />
-		</property>
-	</bean>
-
-	<bean id="entityManagerFactory"
-		class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean">
-		<property name="dataSource" ref="expressMatchDataSource" />
-		<property name="jpaVendorAdapter">
-			<bean class="org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter">
-				<property name="generateDdl" value="true" />
-				<property name="database" value="HSQL" />
-			</bean>
-		</property>
 	</bean>
 
 	<tx:annotation-driven />
 	
-=======
-	<tx:annotation-driven />
->>>>>>> branch 'master' of https://github.com/davigrangeiro/expressMatch.git
 	
 </beans>

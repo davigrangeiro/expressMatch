@@ -28,7 +28,7 @@ public interface ExpressMatchGrountTruthReader<Type> {
 	 *
 	 * @return the data set
 	 */
-	public List<Expression> getDataSet();
+	public List<Expression> getDataSet(final String[] filesPrefix);
 	
 	/**
 	 * Group data set.

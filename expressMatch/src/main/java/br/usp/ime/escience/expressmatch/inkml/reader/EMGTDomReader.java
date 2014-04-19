@@ -7,6 +7,7 @@ import java.io.FileNotFoundException;
 import java.io.FilenameFilter;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -36,14 +37,10 @@ public class EMGTDomReader implements ExpressMatchGrountTruthReader<File> {
 
 	private static final Logger logger = LoggerFactory.getLogger(EMGTDomReader.class);
 	
-	/** The path. */
-	private final String PATH = "/home/davi/git/expressMatch/expressMatch/database/expressions/inkml";
-	
-	/** The all. */
 	private final String ALL = "ALL";
 	
-	/** The files prefix. */
-	private final String FILES_PREFIX[] = {this.ALL};
+	/** The path. */
+	private final String PATH = "/home/davi/git/expressMatch/expressMatch/database/expressions/inkml";
 	
 	/** The suffix extension. */
 	private final String SUFFIX_EXTENSION = ".inkml";
@@ -60,28 +57,29 @@ public class EMGTDomReader implements ExpressMatchGrountTruthReader<File> {
 	public Expression read(File in) {
 		Expression ret = null;
 		try {
-			//String fileContents = this.getFileContents(in);
 			ret = EMGTDomReaderUtil.read(in);
 			read++;
 		} catch (FileNotFoundException e) {
-			logger.info("Arquivo não encontrado.");
-			e.printStackTrace();
+			ret = null;
+			logger.info(MessageFormat.format("Arquivo {0} não encontrado.", in.getName()));
+			logger.error(e.getMessage(), e);
 			error++;
 		} catch (IOException e) {
-			logger.info("Ocorreram problemas ao ler o arquivo. (IO)");
-			e.printStackTrace();
+			ret = null;
+			logger.info(MessageFormat.format("Ocorreram problemas ao ler o arquivo {0}. (IO)", in.getName()));
+			logger.error(e.getMessage(), e);
 			error++;
 		} catch (ParserConfigurationException e) {
-			logger.info("Ocorreram problemas ao ler o arquivo. (PARSE)");
-			e.printStackTrace();
+			ret = null;
+			logger.info(MessageFormat.format("Ocorreram problemas ao ler o arquivo {0}. (PARSE)", in.getName()));
+			logger.error(e.getMessage(), e);
 			error++;
 		} catch (SAXException e) {
-			logger.info("Ocorreram problemas ao ler o arquivo. (SAX)");
-			e.printStackTrace();
+			ret = null;
+			logger.info(MessageFormat.format("Ocorreram problemas ao ler o arquivo {0}. (SAX)", in.getName()));
+			logger.error(e.getMessage(), e);
 			error++;
 		}
-		logger.info("Files (error): "+error);
-		logger.info("Files loaded:  "+read);
 		return ret;
 	}
 	
@@ -99,11 +97,14 @@ public class EMGTDomReader implements ExpressMatchGrountTruthReader<File> {
 	private String getFileContents(File file) throws FileNotFoundException, IOException{
 		StringBuilder ret = new StringBuilder();
 		FileInputStream input = new FileInputStream(file);
-		BufferedReader reader = new BufferedReader(new InputStreamReader(input));
-		if(reader != null){
-			while(reader.ready()){
-				ret.append(reader.readLine()).append("\n");
+		try(BufferedReader reader = new BufferedReader(new InputStreamReader(input))){
+			if(reader != null){
+				while(reader.ready()){
+					ret.append(reader.readLine()).append("\n");
+				}
 			}
+		} catch (IOException e) {
+			throw e;
 		}
 		return ret.toString();
 	}
@@ -114,13 +115,17 @@ public class EMGTDomReader implements ExpressMatchGrountTruthReader<File> {
 	 *
 	 * @return the data set
 	 */
-	public List<Expression> getDataSet(){
+	public List<Expression> getDataSet(final String[] filesPrefix){
+		resetReader();
 		List<Expression> ret = null;
-		if(this.FILES_PREFIX.length == 1 && this.ALL.equalsIgnoreCase(this.FILES_PREFIX[0])){
+		if(filesPrefix.length == 1 && this.ALL.equalsIgnoreCase(filesPrefix[0])){
 			ret = this.getAllDataSet();
 		}else{
-			ret = this.getDataSetByPrefix();
+			ret = this.getDataSetByPrefix(filesPrefix);
 		}
+		logger.info("Files not read (error): " + error);
+		logger.info("Files loaded:  " + read);
+		logger.info("Expressions returned:  " + ret.size());
 		return ret;
 	}
 	
@@ -167,14 +172,21 @@ public class EMGTDomReader implements ExpressMatchGrountTruthReader<File> {
 		return this.getTraceSetsFromFiles(files);
 		
 	}
+
+
+
+	private void resetReader() {
+		this.read = 0;
+		this.error = 0;
+	}
 	
 	/**
 	 * Gets the data set by prefix.
 	 *
 	 * @return the data set by prefix
 	 */
-	private List<Expression> getDataSetByPrefix(){
-		List<File> files = getFilteredFiles();
+	private List<Expression> getDataSetByPrefix(final String[] filesPrefix){
+		List<File> files = getFilteredFiles(filesPrefix);
 		return this.getTraceSetsFromFiles(files);
 		
 	}
@@ -187,10 +199,9 @@ public class EMGTDomReader implements ExpressMatchGrountTruthReader<File> {
 	 */
 	private List<Expression> getTraceSetsFromFiles(List<File> files){
 		List<Expression> ret = new ArrayList<Expression>();
-		Expression toAdd = null;
 		for (File file : files) {
 			logger.info(file.getName());
-			toAdd = this.read(file);
+			Expression toAdd = this.read(file);
 			if(null != toAdd){
 				ret.add(toAdd);
 			}
@@ -204,9 +215,9 @@ public class EMGTDomReader implements ExpressMatchGrountTruthReader<File> {
 	 *
 	 * @return the filtered files
 	 */
-	private List<File> getFilteredFiles(){
+	private List<File> getFilteredFiles(final String[] filesPrefix){
 		List<File> ret = new ArrayList<File>();
-		FilenameFilter filter = this.getFileNameFilter();
+		FilenameFilter filter = this.getFileNameFilter(filesPrefix);
 		File directory = new File(this.PATH);
 		String[] fileNames = directory.list(filter);
 		Arrays.sort(fileNames);
@@ -242,13 +253,13 @@ public class EMGTDomReader implements ExpressMatchGrountTruthReader<File> {
 	 *
 	 * @return the file name filter
 	 */
-	private FilenameFilter getFileNameFilter(){
+	private FilenameFilter getFileNameFilter(final String[] filesPrefix){
 		FilenameFilter filter = new FilenameFilter() {
 			public boolean accept(File directory, String fileName) {
 				boolean ret = false;
-				for (int i = 0; i < FILES_PREFIX.length && !ret; i++) {
+				for (int i = 0; i < filesPrefix.length && !ret; i++) {
 					if(fileName.endsWith(SUFFIX_EXTENSION)){
-						if(fileName.contains(FILES_PREFIX[i])){
+						if(fileName.contains(filesPrefix[i])){
 							ret = true;
 						}
 					}
@@ -268,10 +279,8 @@ public class EMGTDomReader implements ExpressMatchGrountTruthReader<File> {
 		FilenameFilter filter = new FilenameFilter() {
 			public boolean accept(File directory, String fileName) {
 				boolean ret = false;
-				for (int i = 0; i < FILES_PREFIX.length && !ret; i++) {
-					if(fileName.endsWith(SUFFIX_EXTENSION)){
-						ret = true;
-					}
+				if(fileName.endsWith(SUFFIX_EXTENSION)){
+					ret = true;
 				}
 				return ret;
 			}

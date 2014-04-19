@@ -10,7 +10,7 @@
 <annotation type="expression">104</annotation>
 <annotation type="writer">Nina</annotation>
 <annotation type="category">Algebra</annotation>
-<annotation type="truth">$\frac{a}{b} < \frac{c}{d} \Longrightarrow \frac{a}{b} <  \frac{a+c}{b+d} < \frac{c}{d}$</annotation>
+<annotation type="truth"><![CDATA[$\frac{a}{b} < \frac{c}{d} \Longrightarrow \frac{a}{b} <  \frac{a+c}{b+d} < \frac{c}{d}$]]></annotation>
 <trace id="0">
 352.0 215.0 1318358562667
 </trace>

@@ -53,5 +53,13 @@ public class ExpressionServiceProvider {
 		logger.info(MessageFormat.format("Saved {0} expression types.", expressions.size()));
 	}
 	
+	public List<ExpressionType> loadExpressionTypes(){
+		List<ExpressionType> res = null;
+		logger.info("Retrieving expression types.");
+		res = this.expressionTypeRepository.findAll();
+		logger.info(MessageFormat.format("Retrieved {0} expression types.", res.size()));
+		return res;
+	}
+	
 	
 }

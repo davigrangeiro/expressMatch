@@ -1,4 +1,4 @@
-package br.usp.ime.escience.expressmatch.service.gson;
+package br.usp.ime.escience.expressmatch.service.gson.generic;
 
 import java.lang.reflect.Type;
 import java.util.Date;
@@ -11,7 +11,6 @@ import com.google.gson.JsonDeserializer;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonParseException;
 
-import br.usp.ime.escience.expressmatch.gson.controller.generic.JSONParseable;
 import br.usp.ime.escience.expressmatch.model.Stroke;
 
 /**

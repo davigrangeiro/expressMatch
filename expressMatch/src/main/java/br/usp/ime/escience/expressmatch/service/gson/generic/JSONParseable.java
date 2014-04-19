@@ -1,4 +1,4 @@
-package br.usp.ime.escience.expressmatch.gson.controller.generic;
+package br.usp.ime.escience.expressmatch.service.gson.generic;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;

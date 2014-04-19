@@ -15,10 +15,10 @@
     		<ui:define name="content">
 
 				<dp:panel id="MyDP01" width="400" height="180" drawable="false"
-					jsonVar="#{drawablePanel.jsonLoadString}" name="Model Expression" zIndex="-2"/>
+					jsonVar="#{evaluateExpressionsPanelController.jsonLoadString}" name="Model Expression" zIndex="-2"/>
 				<dp:panel id="MyDP02" width="750" height="350" drawable="true" name="Transcription"
-					jsonVar="#{drawablePanel.jsonString}" zIndex="2"
-					onSave="#{drawablePanel.saveStrokes}" />
+					jsonVar="#{evaluateExpressionsPanelController.jsonString}" zIndex="2"
+					onSave="#{evaluateExpressionsPanelController.saveStrokes}" />
 	
 			</ui:define>			
     	</ui:composition>

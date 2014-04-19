@@ -6,7 +6,6 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -64,6 +63,7 @@ public class EMGTDomReaderUtil {
 	
 
 	/** The Constant ID_XML. */
+	@SuppressWarnings("unused")
 	private static final String ID_XML = "xml:id";
 	
 	/** The Constant TYPE. */
@@ -133,7 +133,7 @@ public class EMGTDomReaderUtil {
 				t = new Stroke();
 				Element e = (Element) traces.item(i);
 				t.setStrokeId((Integer.valueOf(e.getAttribute(EMGTDomReaderUtil.ID))));
-				t.setPoints(new HashSet<Point>());
+				t.setPoints(new ArrayList<Point>());
 				String points = e.getFirstChild().getNodeValue();
 
 				String[] instances = points.split(COMMA),
@@ -159,7 +159,7 @@ public class EMGTDomReaderUtil {
 			for (int i = 1; i < traceGroup.getLength(); i++) {
 				symbol = new Symbol();
 				symbol.setExpression(ret);
-				symbol.setStrokes(new HashSet<Stroke>());
+				symbol.setStrokes(new ArrayList<Stroke>());
 
 				Element e = (Element) traceGroup.item(i);
 				

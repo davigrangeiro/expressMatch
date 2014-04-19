@@ -1,8 +1,9 @@
 package br.usp.ime.escience.expressmatch.model;
 
 
-import java.util.HashSet;
-import java.util.Set;
+import java.beans.Transient;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -18,6 +19,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+
 @Entity
 @Table(name = "stroke", catalog = "expressMatch")
 public class Stroke implements java.io.Serializable {
@@ -26,10 +28,12 @@ public class Stroke implements java.io.Serializable {
 
 	private Integer id;
 	private Symbol symbol;
-	private Float ltPoint;
-	private Float rbPoint;
 	private Integer strokeId;
-	private Set<Point> points = new HashSet<>(0);
+	private List<Point> points = new ArrayList<>(0);
+	
+	
+	private Point ltPoint;
+	private Point rbPoint;
 
 	public Stroke() {
 	}
@@ -38,12 +42,34 @@ public class Stroke implements java.io.Serializable {
 		this.symbol = symbol;
 	}
 
-	public Stroke(Symbol symbol, Float ltPoint, Float rbPoint, Set<Point> points) {
+	public Stroke(Symbol symbol, Point ltPoint, Point rbPoint, List<Point> points) {
 		this.symbol = symbol;
 		this.ltPoint = ltPoint;
 		this.rbPoint = rbPoint;
 		this.points = points;
 	}
+	
+	@Transient
+    public boolean addCheckingBoundingBox(Point e) {
+        if(this.getPoints().isEmpty()){
+            //The first Point2D added will be
+            //the left-top and the right-bottom Point2D
+            ltPoint = new Point(e);
+            rbPoint = new Point(e);
+        }
+        else{
+            if(e.getX()<ltPoint.getX())
+                ltPoint = new Point(e.getX(),ltPoint.getY());
+            if(e.getY()<ltPoint.getY())
+                ltPoint = new Point(ltPoint.getX(),e.getY());
+
+            if(e.getX()>rbPoint.getX())
+                rbPoint = new Point(e.getX(),rbPoint.getY());
+            if(e.getY()>rbPoint.getY())
+                rbPoint = new Point(rbPoint.getX(),e.getY());
+         }
+        return this.getPoints().add(e);
+    }
 
 	@Id
 	@GeneratedValue(strategy = IDENTITY)
@@ -66,30 +92,30 @@ public class Stroke implements java.io.Serializable {
 		this.symbol = symbol;
 	}
 
-	@Column(name = "lt_point", precision = 12, scale = 0)
-	public Float getLtPoint() {
+	@Transient
+	public Point getLtPoint() {
 		return this.ltPoint;
 	}
 
-	public void setLtPoint(Float ltPoint) {
+	public void setLtPoint(Point ltPoint) {
 		this.ltPoint = ltPoint;
 	}
-
-	@Column(name = "rb_point", precision = 12, scale = 0)
-	public Float getRbPoint() {
+	
+	@Transient
+	public Point getRbPoint() {
 		return this.rbPoint;
 	}
 
-	public void setRbPoint(Float rbPoint) {
+	public void setRbPoint(Point rbPoint) {
 		this.rbPoint = rbPoint;
 	}
 
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "stroke", cascade={CascadeType.PERSIST})
-	public Set<Point> getPoints() {
+	public List<Point> getPoints() {
 		return this.points;
 	}
 
-	public void setPoints(Set<Point> points) {
+	public void setPoints(List<Point> points) {
 		this.points = points;
 	}
 

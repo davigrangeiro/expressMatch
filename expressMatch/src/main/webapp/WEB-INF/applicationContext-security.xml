@@ -9,13 +9,10 @@
 			          http://www.springframework.org/schema/security
 			          http://www.springframework.org/schema/security/spring-security.xsd">
 
-    <http pattern="/faces/javax.faces.resource/**" security="none" />
-
     <!-- Configure filter -->
     <http auto-config="true" use-expressions="true"> 
  
         <!-- Don't set any role restrictions on login.jsp -->
-<<<<<<< HEAD
         <intercept-url pattern="/unsecure/login/login.faces" 
         			   access="permitAll"/>
         			   
@@ -26,22 +23,10 @@
         <!-- Don't set any role restrictions on resource folder -->
         <intercept-url pattern="/javax.faces.resource/**" 
         			   access="permitAll"/>
-=======
-        <intercept-url pattern="/pages/login/login.faces" 
-        			   access="permitAll" />
->>>>>>> branch 'master' of https://github.com/davigrangeiro/expressMatch.git
         			   
         <!-- Restrict access to ALL other pages -->
-<<<<<<< HEAD
         <intercept-url pattern="/pages/**" 
         			   access="hasRole('ROLE_ADMIN')"/>
-        			   
-=======
-        <intercept-url pattern="/**" 
-        			   access="hasRole('ROLE_ADMIN')" />
-        			   
-        <sec:intercept-url pattern="/javax.faces.resource/**" access="permitAll"/>
->>>>>>> branch 'master' of https://github.com/davigrangeiro/expressMatch.git
         
         <!-- Set the login page and what to do if login fails -->
         <form-login login-page="/unsecure/login/login.faces" 

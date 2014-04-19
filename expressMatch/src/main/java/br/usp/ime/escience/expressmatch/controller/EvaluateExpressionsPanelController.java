@@ -1,6 +1,7 @@
 package br.usp.ime.escience.expressmatch.controller;
 
 import java.io.Serializable;
+import java.util.Arrays;
 
 import javax.annotation.PostConstruct;
 import javax.faces.context.FacesContext;
@@ -11,30 +12,31 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.Scope;
 
-<<<<<<< HEAD
 import br.usp.ime.escience.expressmatch.model.Stroke;
-import br.usp.ime.escience.expressmatch.service.gson.StrokeJSONParser;
-=======
-import br.usp.ime.escience.expressmatch.gson.controller.StrokeJSONParser;
-import br.usp.ime.escience.expressmatch.model.Stroke;
->>>>>>> branch 'master' of https://github.com/davigrangeiro/expressMatch.git
+import br.usp.ime.escience.expressmatch.model.Symbol;
+import br.usp.ime.escience.expressmatch.service.expressions.ExpressionServiceProvider;
+import br.usp.ime.escience.expressmatch.service.expressions.preprocessing.PreprocessingAlgorithms;
+import br.usp.ime.escience.expressmatch.service.gson.generic.StrokeJSONParser;
 
 @Named
 @Scope("request")
-public class DrawablePanel implements Serializable{
+public class EvaluateExpressionsPanelController implements Serializable{
 
 	private static final long serialVersionUID = 1L;
 
-	private static final Logger logger = LoggerFactory.getLogger(DrawablePanel.class);
+	private static final Logger logger = LoggerFactory.getLogger(EvaluateExpressionsPanelController.class);
 
 	@Inject
 	private StrokeJSONParser strokeParser; 
+	
+	@Inject
+	private ExpressionServiceProvider expressionServiceProvider;
 	
 	private String jsonString;
 	private String jsonLoadString;
 	private Stroke strokes[];
 
-	public DrawablePanel() {
+	public EvaluateExpressionsPanelController() {
 		super();
 		this.jsonString = "";
 	}
@@ -43,7 +45,19 @@ public class DrawablePanel implements Serializable{
 		try {
 			logger.info("logandooo.");
 			parseJsonString(jsonString);
-			setJsonLoadString(jsonString);
+			Symbol s = new Symbol();
+			
+			for (Stroke str : this.strokes) {
+				s.getStrokes().add(str);
+			}
+			s = PreprocessingAlgorithms.preprocessSymbol(s);
+			
+			strokes = new Stroke[1];
+			strokes[0] = new Stroke();
+			
+			strokes[0].setPoints(Arrays.asList(PreprocessingAlgorithms.getNPoints(s, 30)));
+			
+			setJsonLoadString(this.getStrokeParser().toJSON(strokes));
 			this.jsonString = null;
 		} catch (Exception e) {
 			e.printStackTrace();

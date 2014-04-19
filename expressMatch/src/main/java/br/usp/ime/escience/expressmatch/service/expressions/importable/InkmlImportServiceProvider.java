@@ -20,6 +20,10 @@ import br.usp.ime.escience.expressmatch.service.user.UserServiceProvider;
 public class InkmlImportServiceProvider {
 
 	private static final Logger logger = LoggerFactory.getLogger(InkmlImportServiceProvider.class);
+	
+	private final String ALL = "ALL";
+
+	private final String FILES_PREFIX[] = {this.ALL};
 
 	private static final String ROOT_NICK = "root";
 
@@ -38,7 +42,7 @@ public class InkmlImportServiceProvider {
 		logger.info("Importing dataset");
 		
 		List<Expression> rootExpressions = new ArrayList<Expression>();
-		List<Expression> expressions = inkmlDomReader.getDataSet();
+		List<Expression> expressions = inkmlDomReader.getDataSet(FILES_PREFIX);
 		
 		for (Expression expression : expressions) {
 				
