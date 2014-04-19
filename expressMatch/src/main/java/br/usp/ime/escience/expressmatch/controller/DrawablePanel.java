@@ -11,8 +11,13 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.Scope;
 
+<<<<<<< HEAD
 import br.usp.ime.escience.expressmatch.model.Stroke;
 import br.usp.ime.escience.expressmatch.service.gson.StrokeJSONParser;
+=======
+import br.usp.ime.escience.expressmatch.gson.controller.StrokeJSONParser;
+import br.usp.ime.escience.expressmatch.model.Stroke;
+>>>>>>> branch 'master' of https://github.com/davigrangeiro/expressMatch.git
 
 @Named
 @Scope("request")
