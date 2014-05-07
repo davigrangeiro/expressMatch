@@ -2,25 +2,26 @@ package br.usp.ime.escience.expressmatch.controller.config;
 
 import java.io.Serializable;
 
-import javax.inject.Inject;
-import javax.inject.Named;
+import javax.faces.bean.ManagedBean;
+import javax.faces.bean.RequestScoped;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.context.annotation.Scope;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import br.usp.ime.escience.expressmatch.service.expressions.importable.InkmlImportServiceProvider;
 
-
-@Named
-@Scope("request")
+@Component
+@ManagedBean
+@RequestScoped
 public class ConfigController implements Serializable{
 
 	private static final long serialVersionUID = 1L;
 
 	private static final Logger logger = LoggerFactory.getLogger(ConfigController.class);
 	
-	@Inject
+	@Autowired
 	private InkmlImportServiceProvider importServiceProvider;
 	
 	public String importDataBase(){

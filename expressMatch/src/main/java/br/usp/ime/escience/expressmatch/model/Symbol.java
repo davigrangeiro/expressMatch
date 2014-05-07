@@ -104,7 +104,7 @@ public class Symbol implements java.io.Serializable {
 		this.label = label;
 	}
 	
-	@Column(name = "representant", nullable = false)
+	@Column(name = "representant")
 	public boolean isRepresentant() {
 		return this.representant;
 	}
@@ -123,7 +123,7 @@ public class Symbol implements java.io.Serializable {
 	}
 
 
-	@OneToMany(fetch = FetchType.LAZY, mappedBy = "symbol", cascade={CascadeType.PERSIST})
+	@OneToMany(fetch = FetchType.EAGER, mappedBy = "symbol", cascade={CascadeType.PERSIST})
 	public List<Stroke> getStrokes() {
 		return this.strokes;
 	}

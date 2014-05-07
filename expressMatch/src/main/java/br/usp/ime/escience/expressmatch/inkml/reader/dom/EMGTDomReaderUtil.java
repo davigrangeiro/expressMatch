@@ -169,7 +169,7 @@ public class EMGTDomReaderUtil {
 				List<Integer> strokeIds = getAtributeValueForNodes(e, EMGTDomReaderUtil.TRACE_VIEW, EMGTDomReaderUtil.TRACE_DATA_REF);
 				for (Integer id : strokeIds) {
 					for (Stroke stroke : strokes) {
-						if(id == stroke.getStrokeId()){
+						if(id == stroke.getStrokeId().intValue()){
 							stroke.setSymbol(symbol);
 							symbol.getStrokes().add(stroke);
 							break;

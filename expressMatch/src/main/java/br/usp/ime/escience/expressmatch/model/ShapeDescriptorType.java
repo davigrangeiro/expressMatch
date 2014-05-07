@@ -84,13 +84,4 @@ public class ShapeDescriptorType implements java.io.Serializable {
 		this.insertDate = insertDate;
 	}
 
-	@OneToOne(fetch = FetchType.LAZY, mappedBy = "shapeDescriptorType")
-	public ShapeDescriptor getShapeDescriptor() {
-		return this.shapeDescriptor;
-	}
-
-	public void setShapeDescriptor(ShapeDescriptor shapeDescriptor) {
-		this.shapeDescriptor = shapeDescriptor;
-	}
-
 }

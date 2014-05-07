@@ -26,6 +26,7 @@ public class UserInfo implements java.io.Serializable {
 	private Institution institution;
 	private String name;
 	private String nationaity;
+	private UserParameter userParameter;
 	private Set<Expression> expressions = new HashSet<>(0);
 
 	public UserInfo() {
@@ -101,6 +102,16 @@ public class UserInfo implements java.io.Serializable {
 
 	public void setExpressions(Set<Expression> expressions) {
 		this.expressions = expressions;
+	}
+	
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "user_parameter_id")
+	public UserParameter getUserParameter() {
+		return this.userParameter;
+	}
+
+	public void setUserParameter(UserParameter userParameter) {
+		this.userParameter = userParameter;
 	}
 
 	/* (non-Javadoc)

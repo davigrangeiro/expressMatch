@@ -8,7 +8,7 @@ function HandwritenPanel() {
 	var DRAWING = 1;
 	var NOT_DRAWING = ZERO;
 	var CONTEXT_2D = "2d";
-	var BORDER = 70;
+	var BORDER = 20;
 	var PANEL_MIN_SIZE_X = 215;
 	var PANEL_MIN_SIZE_Y = 130;
 	var id = 0;
@@ -76,7 +76,7 @@ function HandwritenPanel() {
 	this.startCanvas = function() {
 		if (this.strokes.length > 0) {
 			if (this.drawable) {
-				this.scaleCanvas();
+				this.scaleStrokes();
 				this.drawStrokes();
 			} else {
 				this.drawScaledStrokes(this.getExpressionScale());
@@ -84,6 +84,26 @@ function HandwritenPanel() {
 		}
 	};
 
+	this.scaleStrokes = function() {
+		 var scale = this.getExpressionScale();
+		 var leftCorner = this.getLeftTopCorner();
+		 var bBox = this.getStrokesBoundingBoxSize();
+		 var newExpressionSize = {width: (bBox.width*scale), height: (bBox.height*scale)}
+		 bBox.width = (this.canvasElement.width - newExpressionSize.width)/2.0;
+		 bBox.height = (this.canvasElement.height - newExpressionSize.height)/2.0;
+		 leftCorner = {x: leftCorner.x *scale, y: leftCorner.y *scale}
+		 bBox.width = (bBox.width - leftCorner.x);
+		 bBox.height = (bBox.height - leftCorner.y);
+		
+		
+		for ( var i = 0; i < this.strokes.length; i = i + 1) {
+			for ( var j = 0; j < this.strokes[i].points.length; j =  j + 1){
+				this.strokes[i].points[j].x = this.strokes[i].points[j].x * scale + bBox.width;
+				this.strokes[i].points[j].y = this.strokes[i].points[j].y * scale + bBox.height;
+			}
+		}
+	};
+	
 	this.scaleCanvas = function() {
 		var rightCorner = this.getRightBottonCorner();
 		if (rightCorner.x > this.canvasElement.width) {
@@ -97,6 +117,7 @@ function HandwritenPanel() {
 	this.getExpressionScale = function() {
 		var leftCorner = this.getLeftTopCorner();
 		var rightCorner = this.getRightBottonCorner();
+		
 		var scales = {
 			x : this.canvasElement.width
 					/ (rightCorner.x - leftCorner.x + 2 * BORDER),
@@ -115,6 +136,7 @@ function HandwritenPanel() {
 			}
 			return scales.y;
 		}
+		
 	};
 
 	this.getLeftTopCorner = function() {
@@ -226,13 +248,20 @@ function HandwritenPanel() {
 	};
 
 	this.drawScaledStrokes = function(scale) {
-		this.clearCanvas();
-		// var scale = this.getExpressionScale();
-		// var bBox = this.getStrokesBoundingBoxSize();
-		// bBox.width = (this.canvasElement.width - (bBox.width*scale) )/2;
-		// bBox.height = (this.canvasElement.height - (bBox.height*scale))/2;
+		 this.clearCanvas();
+		 var scale = this.getExpressionScale();
+		 var leftCorner = this.getLeftTopCorner();
+		 var bBox = this.getStrokesBoundingBoxSize();
+		 var newExpressionSize = {width: (bBox.width*scale), height: (bBox.height*scale)}
+		 bBox.width = (this.canvasElement.width - newExpressionSize.width)/2.0;
+		 bBox.height = (this.canvasElement.height - newExpressionSize.height)/2.0;
+		 leftCorner = {x: leftCorner.x *scale, y: leftCorner.y *scale}
+		 bBox.width = (bBox.width - leftCorner.x);
+		 bBox.height = (bBox.height - leftCorner.y);
+		
+		
 		for ( var i = 0; i < this.strokes.length; i = i + 1) {
-			this.drawStroke(this.strokes[i], scale, 0, 0);
+			this.drawStroke(this.strokes[i], scale, bBox.width , bBox.height);
 		}
 	};
 
@@ -247,11 +276,13 @@ function HandwritenPanel() {
 		this.setXYValues(stroke.points[0]);
 		this.context.beginPath();
 		for ( var i = 1; i < stroke.points.length; i = i + 1) {
-			this.context.moveTo((this.lastX * scale) + xOff,
-					(this.lastY * scale) + yOff);
-			this.context.lineTo((stroke.points[i].x * scale) + xOff,
-					(stroke.points[i].y * scale) + yOff);
+			
+			this.context.moveTo((this.lastX * scale) + xOff, (this.lastY * scale) + yOff);
+			this.context.lineTo((stroke.points[i].x * scale) + xOff, (stroke.points[i].y * scale) + yOff);
 			this.setXYValues(stroke.points[i]);
+			
+//			alert(""+ ((stroke.points[i].x * scale) + xOff) + ((stroke.points[i].y * scale) + yOff) + scale + xOff + yOff));
+			
 		}
 		this.context.stroke();
 	};

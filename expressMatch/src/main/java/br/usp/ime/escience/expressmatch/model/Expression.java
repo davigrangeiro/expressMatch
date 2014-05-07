@@ -113,7 +113,7 @@ public class Expression implements java.io.Serializable {
 		this.label = label;
 	}
 
-	@OneToMany(fetch = FetchType.LAZY, mappedBy = "expression", cascade={CascadeType.PERSIST})
+	@OneToMany(fetch = FetchType.EAGER, mappedBy = "expression", cascade={CascadeType.PERSIST})
 	public List<Symbol> getSymbols() {
 		return this.symbols;
 	}

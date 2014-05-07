@@ -52,3 +52,23 @@
 	border: none;
 	background-color: white;
 }
+
+.nextButton, .nextButton:HOVER, .nextButton:VISITED {
+	background-image: url("#{resource['images/btn_next.png']}");
+	background-size: cover;
+	background-repeat: no-repeat;
+	width: 32px;
+	height: 32px;
+	border: none;
+	background-color: white;
+}
+
+.previousButton, .previousButton:HOVER, .previousButton:VISITED {
+	background-image: url("#{resource['images/btn-previous.png']}");
+	background-size: cover;
+	background-repeat: no-repeat;
+	width: 32px;
+	height: 32px;
+	border: none;
+	background-color: white;
+}

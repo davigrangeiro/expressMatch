@@ -82,6 +82,24 @@ ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
+-- Table `expressMatch`.`user_parameter`
+-- -----------------------------------------------------
+DROP TABLE IF EXISTS `expressMatch`.`user_parameter` ;
+
+CREATE  TABLE IF NOT EXISTS `expressMatch`.`user_parameter` (
+  `id` INT(11) NOT NULL AUTO_INCREMENT ,
+  `polar_local_regions` INT NOT NULL ,
+  `angular_local_regions` INT NOT NULL ,
+  `polar_global_regions` INT NOT NULL ,
+  `angular_global_regions` INT NOT NULL ,
+  `points_per_symbol` INT NOT NULL ,
+  `insert_date` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ,
+  `root` TINYINT(1) NULL DEFAULT FALSE ,
+  PRIMARY KEY (`id`) )
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
 -- Table `expressMatch`.`user_info`
 -- -----------------------------------------------------
 DROP TABLE IF EXISTS `expressMatch`.`user_info` ;
@@ -92,8 +110,10 @@ CREATE  TABLE IF NOT EXISTS `expressMatch`.`user_info` (
   `instituition_id` INT(8) NOT NULL ,
   `nationaity` VARCHAR(45) NULL ,
   `insert_date` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ,
+  `user_parameter_id` INT(11) NULL ,
   PRIMARY KEY (`id`) ,
   INDEX `instituition_fk_idx` (`instituition_id` ASC) ,
+  INDEX `fk_user_parameter_idx` (`user_parameter_id` ASC) ,
   CONSTRAINT `user_fk`
     FOREIGN KEY (`id` )
     REFERENCES `expressMatch`.`user` (`id` )
@@ -102,6 +122,11 @@ CREATE  TABLE IF NOT EXISTS `expressMatch`.`user_info` (
   CONSTRAINT `instituition_fk`
     FOREIGN KEY (`instituition_id` )
     REFERENCES `expressMatch`.`institution` (`id` )
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `fk_user_parameter`
+    FOREIGN KEY (`user_parameter_id` )
+    REFERENCES `expressMatch`.`user_parameter` (`id` )
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
@@ -163,8 +188,6 @@ DROP TABLE IF EXISTS `expressMatch`.`stroke` ;
 
 CREATE  TABLE IF NOT EXISTS `expressMatch`.`stroke` (
   `id` INT(11) NOT NULL AUTO_INCREMENT ,
-  `lt_point` FLOAT NULL ,
-  `rb_point` FLOAT NULL ,
   `symbol_id` INT(11) NOT NULL ,
   `insert_date` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ,
   `stroke_id` INT(3) NOT NULL ,
@@ -229,9 +252,10 @@ CREATE  TABLE IF NOT EXISTS `expressMatch`.`shape_descriptor` (
   `symbol_id` INT(11) NULL ,
   PRIMARY KEY (`id`) ,
   INDEX `expression_shape_context_fk_idx` (`expression_id` ASC) ,
+  INDEX `shape_context_type_idx` (`type` ASC) ,
   INDEX `symbol_shape_context_fk_idx` (`symbol_id` ASC) ,
   CONSTRAINT `shape_context_type`
-    FOREIGN KEY (`id` )
+    FOREIGN KEY (`type` )
     REFERENCES `expressMatch`.`shape_descriptor_type` (`id` )
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,

@@ -21,10 +21,17 @@
 	
 	<composite:attribute name="onSave"
 		method-signature="java.lang.String action()" required="false" />
+	
+	<composite:attribute name="onNext"
+		method-signature="java.lang.String action()" required="false" />
+	<composite:attribute name="onPrevious"
+		method-signature="java.lang.String action()" required="false" />
+	
 
 </composite:interface>
 
 <composite:implementation>
+
 	<h:head>
 		<h:outputStylesheet library="css" name="buttons.css" />
 		<h:outputStylesheet library="css" name="canvas.css" />
@@ -58,6 +65,21 @@
 							onclick="panel#{cc.attrs.id}.redo();"
 							rendered="#{cc.attrs.drawable}">
 						</h:commandButton></td>
+						
+					
+					<td>
+						<h:commandButton styleClass="previousButton"
+							action="#{cc.attrs.onPrevious}"
+							rendered="#{cc.attrs.onPrevious != null}">
+						</h:commandButton>
+					</td>
+					<td>
+						<h:commandButton styleClass="nextButton"
+							action="#{cc.attrs.onNext}"
+							rendered="#{cc.attrs.onNext != null}">
+						</h:commandButton>
+					</td>
+					
 				</tr>
 			</table>
 
@@ -86,7 +108,8 @@
 		</h:form>
 
 	</p:panel>
-	<p:draggable for="panel#{cc.attrs.id}" opacity="0.6"
+	
+	<p:draggable for="panel#{cc.attrs.id}" opacity="0.8"
 		handle=".ui-panel-titlebar" stack=".ui-panel" zindex="#{cc.attrs.zIndex}"/>
 		
 	<p:resizable for="panel#{cc.attrs.id}" minWidth="250" minHeight="250"

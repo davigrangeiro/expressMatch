@@ -1,6 +1,7 @@
 package br.usp.ime.escience.expressmatch.controller;
 
 import java.io.Serializable;
+import java.text.MessageFormat;
 import java.util.List;
 
 import javax.annotation.PostConstruct;
@@ -8,6 +9,8 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
 
+import org.primefaces.model.DefaultTreeNode;
+import org.primefaces.model.TreeNode;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,6 +18,7 @@ import org.springframework.stereotype.Component;
 
 import br.usp.ime.escience.expressmatch.model.Expression;
 import br.usp.ime.escience.expressmatch.model.ExpressionType;
+import br.usp.ime.escience.expressmatch.model.Point;
 import br.usp.ime.escience.expressmatch.model.Stroke;
 import br.usp.ime.escience.expressmatch.model.Symbol;
 import br.usp.ime.escience.expressmatch.model.User;
@@ -24,32 +28,29 @@ import br.usp.ime.escience.expressmatch.service.gson.generic.StrokeJSONParser;
 @Component
 @ManagedBean
 @ViewScoped
-public class EvaluateExpressionsPanelController implements Serializable{
+public class ExpressionsCatalogController implements Serializable{
 
 	private static final long serialVersionUID = 1L;
 
-	private static final Logger logger = LoggerFactory.getLogger(EvaluateExpressionsPanelController.class);
+	private static final Logger logger = LoggerFactory.getLogger(ExpressionsCatalogController.class);
 
 	@Autowired
 	private StrokeJSONParser strokeParser; 
 	
 	@Autowired
-	private UserController userController;
-	
-	@Autowired
 	private ExpressionServiceProvider expressionServiceProvider;
 	
 	private String jsonString;
-	
-	private String jsonLoadString;
-	
-	private Stroke strokes[];
+
+    private TreeNode expressionTree;
+    
+    private Expression expression;
 	
 	private List<ExpressionType> types;
 	
 	private int eTypeIndex = 0;
 
-	public EvaluateExpressionsPanelController() {
+	public ExpressionsCatalogController() {
 		super();
 		cleanTranscriptionData();
 	}
@@ -58,24 +59,6 @@ public class EvaluateExpressionsPanelController implements Serializable{
 		this.jsonString = "";
 	}
 	
-	public String saveStrokes() {
-		try {
-			parseJsonString(jsonString);
-			
-			this.expressionServiceProvider.saveTranscription(this.strokes, this.types.get(this.eTypeIndex), this.userController.getUser());
-			
-		} catch (Exception e) {
-			logger.error(e.getMessage(), e);
-			
-			//TODO: ADD ERROR MESSAGE
-		}
-		return "";
-	}
-	
-	private void parseJsonString(String jsonString)
-    {
-		setStrokes(this.getStrokeParser().arrayFromJSON(jsonString));
-    }
 	
 	@PostConstruct
 	public void init() {
@@ -83,44 +66,75 @@ public class EvaluateExpressionsPanelController implements Serializable{
 		types = this.expressionServiceProvider.loadExpressionTypes();
 		
 		eTypeIndex = 0;
-		loadExpressionType(eTypeIndex, this.userController.getUser());
+		loadExpressionType(eTypeIndex);
 	}
 
-	private void loadExpressionType(int index, User user) {
+	private void loadExpressionType(int index) {
 		ExpressionType type = this.types.get(index);
 	
-		Stroke[] modelStrokes = getStrokesForExpression(this.expressionServiceProvider.loadExpressionForExpressionType(type));
+		this.expression = this.expressionServiceProvider.loadExpressionForExpressionType(type);
 		
-		setJsonLoadString(this.getStrokeParser().toJSON(modelStrokes));
+		Stroke[] modelStrokes = getStrokesForExpression(expression);
 		
-		cleanTranscriptionData();
-		Stroke[] userEMStrokes;
-		Expression userExpression = getUserExpression(user, type);
+		setJsonString(this.getStrokeParser().toJSON(modelStrokes));
 		
-		if(null != userExpression){
-			userEMStrokes = getStrokesForExpression(userExpression);
-			setJsonString(this.getStrokeParser().toJSON(userEMStrokes));
+		assembleExpressionDataTree(this.expression);
+	}
+
+	private void assembleExpressionDataTree(Expression e) {
+		
+		this.expressionTree = new DefaultTreeNode(
+				MessageFormat.format("Expression {0} <br> {1}", 
+						 e.getId(), 
+						 e.getLabel()),
+						 null);
+		
+		for (Symbol symbol : e.getSymbols()) {
+			
+			TreeNode nodeSymbol = new DefaultTreeNode(
+					MessageFormat.format("Symbol {0} : {1} <br> Ref: {2}", 
+										 symbol.getId(), 
+										 symbol.getLabel(),
+										 symbol.getHref()), 
+										 expressionTree);
+			
+			for (Stroke stroke : symbol.getStrokes()) {
+				
+				TreeNode nodeStroke = new DefaultTreeNode(
+						MessageFormat.format("Stroke {0}", 
+								 stroke.getStrokeId()), 
+								 nodeSymbol);
+				
+				StringBuilder sb = new StringBuilder();
+
+				for (int i = 0; i < stroke.getPoints().size()-1; i++) {
+					sb.append(MessageFormat.format("X: {0}, Y: {1} <br>", 
+								stroke.getPoints().get(i).getX(),
+								stroke.getPoints().get(i).getY()));
+				}
+				sb.append(MessageFormat.format("X: {0}, Y: {1} <br>", 
+						stroke.getPoints().get(stroke.getPoints().size()-1).getX(),
+						stroke.getPoints().get(stroke.getPoints().size()-1).getY()));
+				
+				TreeNode nodePoint = new DefaultTreeNode(sb.toString(), nodeStroke);
+						;
+			}
 		}
-		
 	}
 	
 	public String nextEM(){
 		eTypeIndex = (eTypeIndex >= types.size()-1) ? 0: eTypeIndex + 1;
-		loadExpressionType(eTypeIndex, this.userController.getUser());
+		loadExpressionType(eTypeIndex);
 		
 		return "";
 	}
 	
 	public String previousEM(){
 		eTypeIndex = (0 == eTypeIndex) ? types.size()-1: eTypeIndex - 1;
-		loadExpressionType(eTypeIndex, this.userController.getUser());
+		loadExpressionType(eTypeIndex);
 		
 		return "";
 		
-	}
-
-	private Expression getUserExpression(User user, ExpressionType type) {
-		return this.expressionServiceProvider.loadExpressionUserForExpressionType(type, user);
 	}
 
 	private Stroke[] getStrokesForExpression(Expression type) {
@@ -171,31 +185,17 @@ public class EvaluateExpressionsPanelController implements Serializable{
 	}
 
 	/**
-	 * @return the jsonLoadString
+	 * @return the expressionTree
 	 */
-	public String getJsonLoadString() {
-		return jsonLoadString;
+	public TreeNode getExpressionTree() {
+		return expressionTree;
 	}
 
 	/**
-	 * @param jsonLoadString the jsonLoadString to set
+	 * @param expressionTree the expressionTree to set
 	 */
-	public void setJsonLoadString(String jsonLoadString) {
-		this.jsonLoadString = jsonLoadString;
-	}
-
-	/**
-	 * @return the strokes
-	 */
-	public Stroke[] getStrokes() {
-		return strokes;
-	}
-
-	/**
-	 * @param strokes the strokes to set
-	 */
-	public void setStrokes(Stroke[] strokes) {
-		this.strokes = strokes;
+	public void setExpressionTree(TreeNode expressionTree) {
+		this.expressionTree = expressionTree;
 	}
 	
 }

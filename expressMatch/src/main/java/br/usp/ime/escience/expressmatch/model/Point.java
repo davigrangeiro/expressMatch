@@ -44,6 +44,7 @@ public class Point implements java.io.Serializable {
 		super();
 		this.x = p.x;
 		this.y = p.y;
+		this.time = p.time;
 	}
 
 	public Point(Stroke stroke, float x, float y, Date time) {

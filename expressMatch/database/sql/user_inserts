@@ -3,6 +3,7 @@ insert into institution (name, acronym, nationality) values ('Institute of Mathe
 
 insert into user(nick, pass, enabled) values('davi', SHA1('admin'), true);
 insert into authorities(user_id, authority) values (2, 'ROLE_ADMIN');
+insert into authorities(user_id, authority) values (2, 'ROLE_USER');
 insert into user_info(id, name, instituition_id, nationaity) values (2, 'Davi Souto Grangeiro', 1, 'Brazilian');
 
 insert into user(nick, pass, enabled) values('root', SHA1('admin'), true);
@@ -59,6 +60,7 @@ insert into user_info(id, name, instituition_id, nationaity) values (13, 'Rosari
 
 insert into user(nick, pass, enabled) values('nina', SHA1('admin'), true);
 insert into authorities(user_id, authority) values (14, 'ROLE_ADMIN');
+insert into authorities(user_id, authority) values (14, 'ROLE_USER');
 insert into user_info(id, name, instituition_id, nationaity) values (14, 'Nina Hirata', 1, 'Brazilian');
 
 insert into user(nick, pass, enabled) values('daniel', SHA1('admin'), true);

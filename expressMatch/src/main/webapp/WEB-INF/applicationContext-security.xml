@@ -26,7 +26,7 @@
         			   
         <!-- Restrict access to ALL other pages -->
         <intercept-url pattern="/pages/**" 
-        			   access="hasRole('ROLE_ADMIN')"/>
+        			   access="hasRole('ROLE_USER')"/>
         
         <!-- Set the login page and what to do if login fails -->
         <form-login login-page="/unsecure/login/login.faces" 

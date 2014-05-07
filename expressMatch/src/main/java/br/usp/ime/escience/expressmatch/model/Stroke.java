@@ -1,7 +1,6 @@
 package br.usp.ime.escience.expressmatch.model;
 
 
-import java.beans.Transient;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -18,6 +17,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 
 @Entity
@@ -36,6 +36,17 @@ public class Stroke implements java.io.Serializable {
 	private Point rbPoint;
 
 	public Stroke() {
+	}
+	
+	public Stroke(Stroke s) {
+		super();
+		this.id = s.id;
+		this.strokeId = s.strokeId;
+		this.points = new ArrayList<Point>();
+		
+		for (Point p : s.points) {
+			this.points.add(new Point(p));
+		}
 	}
 
 	public Stroke(Symbol symbol) {
@@ -110,7 +121,7 @@ public class Stroke implements java.io.Serializable {
 		this.rbPoint = rbPoint;
 	}
 
-	@OneToMany(fetch = FetchType.LAZY, mappedBy = "stroke", cascade={CascadeType.PERSIST})
+	@OneToMany(fetch = FetchType.EAGER, mappedBy = "stroke", cascade={CascadeType.PERSIST})
 	public List<Point> getPoints() {
 		return this.points;
 	}

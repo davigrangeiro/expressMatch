@@ -13,8 +13,6 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToOne;
-import javax.persistence.PrimaryKeyJoinColumn;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -34,30 +32,27 @@ public class ShapeDescriptor implements java.io.Serializable {
 	private Expression expression;
 	private String values;
 	private Integer lenght;
-	private Integer type;
 	private Date insertDate;
 
 	public ShapeDescriptor() {
 	}
 
 	public ShapeDescriptor(ShapeDescriptorType shapeDescriptorType,
-			String values, Integer lenght, Integer type, Date insertDate) {
+			String values, Integer lenght,  Date insertDate) {
 		this.shapeDescriptorType = shapeDescriptorType;
 		this.values = values;
 		this.lenght = lenght;
-		this.type = type;
 		this.insertDate = insertDate;
 	}
 
 	public ShapeDescriptor(Symbol symbol,
 			ShapeDescriptorType shapeDescriptorType, Expression expression,
-			String values, Integer lenght, Integer type, Date insertDate) {
+			String values, Integer lenght, Date insertDate) {
 		this.symbol = symbol;
 		this.shapeDescriptorType = shapeDescriptorType;
 		this.expression = expression;
 		this.values = values;
 		this.lenght = lenght;
-		this.type = type;
 		this.insertDate = insertDate;
 	}
 
@@ -82,8 +77,8 @@ public class ShapeDescriptor implements java.io.Serializable {
 		this.symbol = symbol;
 	}
 
-	@OneToOne(fetch = FetchType.LAZY)
-	@PrimaryKeyJoinColumn
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "type", nullable = false)
 	public ShapeDescriptorType getShapeDescriptorType() {
 		return this.shapeDescriptorType;
 	}
@@ -102,7 +97,7 @@ public class ShapeDescriptor implements java.io.Serializable {
 		this.expression = expression;
 	}
 
-	@Column(name = "values", nullable = false, length = 2048)
+	@Column(name = "descriptor_values", nullable = false, length = 20000)
 	public String getValues() {
 		return this.values;
 	}
@@ -112,25 +107,16 @@ public class ShapeDescriptor implements java.io.Serializable {
 	}
 
 	@Column(name = "lenght", nullable = false)
-	public Integer getLenght() {
+	public int getLenght() {
 		return this.lenght;
 	}
 
-	public void setLenght(Integer lenght) {
+	public void setLenght(int lenght) {
 		this.lenght = lenght;
 	}
 
-	@Column(name = "type", nullable = false)
-	public Integer getType() {
-		return this.type;
-	}
-
-	public void setType(Integer type) {
-		this.type = type;
-	}
-
 	@Temporal(TemporalType.TIMESTAMP)
-	@Column(name = "insert_date", nullable = false, length = 19)
+	@Column(name = "insert_date", length = 19)
 	public Date getInsertDate() {
 		return this.insertDate;
 	}
