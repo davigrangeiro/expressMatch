@@ -7,12 +7,17 @@
 	xmlns:f="http://java.sun.com/jsf/core"
 	xmlns:ui="http://java.sun.com/jsf/facelets"
 	xmlns:p="http://primefaces.org/ui">
-    
+	
+	<head>
+ 		<title>ExpressMatch: A system to collect mathematical expression samples</title>
+		<link rel="stylesheet" type="text/css" href="/expressMatch/resources/css/default.css"/>
+	</head>
+
     <h:body>
-				
+		
 		<form action="expressMatch/j_spring_security_check" method="post">
-			<div style="right: 20px; position: fixed; top: 10px;">
-		    <h:panelGrid columns="6" cellpadding="5">
+			<div class="loginDiv">
+		    <h:panelGrid columns="2" cellpadding="5">
                    <h:outputLabel for="j_username" value="Username:" />
                    <h:inputText id="j_username" required="true"/>	
                    <h:outputLabel for="j_password" value="Password:" />

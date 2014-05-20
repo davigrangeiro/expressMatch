@@ -197,6 +197,13 @@
 				</exclusion>
 			</exclusions>
 		</dependency>
+		
+		<!-- Primefaces Themes -->
+		<dependency>  
+	        <groupId>org.primefaces.themes</groupId>  
+	        <artifactId>all-themes</artifactId>  
+	        <version>1.0.10</version>  
+	    </dependency>  
 
 		<!-- Gson: Java to Json conversion -->
 		<dependency>

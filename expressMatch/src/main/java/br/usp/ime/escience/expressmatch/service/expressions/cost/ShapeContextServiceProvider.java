@@ -13,6 +13,7 @@ import br.usp.ime.escience.expressmatch.constants.SystemConstants;
 import br.usp.ime.escience.expressmatch.model.Expression;
 import br.usp.ime.escience.expressmatch.model.Point;
 import br.usp.ime.escience.expressmatch.model.ShapeDescriptor;
+import br.usp.ime.escience.expressmatch.model.Stroke;
 import br.usp.ime.escience.expressmatch.model.Symbol;
 import br.usp.ime.escience.expressmatch.model.UserParameter;
 import br.usp.ime.escience.expressmatch.model.graph.Graph;
@@ -59,6 +60,29 @@ public class ShapeContextServiceProvider {
         return sc.getSC();
 	}
 	
+	public double[][] evaluateStrokeShapeContextForExpression(Expression expression, UserParameter parameters){
+
+		Graph g = new Graph();
+        ShapeContext sc;
+        
+        int i = 0;
+        for (Symbol symbol : expression.getSymbols()) {
+			for (Stroke stroke : symbol.getStrokes()) {
+				Point strokeRepresentantPoint = stroke.getRepresentantPointOfStroke();
+				
+				g.addVertex(i, strokeRepresentantPoint.getX(), strokeRepresentantPoint.getY());
+				i = i+1;
+			}
+		}
+                    
+        float diagonal = (float)Math.sqrt(Math.pow(g.getHeight(), 2) + Math.pow(g.getWidth(), 2));
+        
+        sc = new ShapeContext(diagonal, g, parameters.getPolarGlobalRegions(), parameters.getAngularGlobalRegions(), false);
+        
+        return sc.getSC();
+	}
+
+	
 	public ShapeDescriptor generateShapeDescriptor(Symbol s, UserParameter parameters){
 		ShapeDescriptor sDescriptor = new ShapeDescriptor();
 		sDescriptor.setShapeDescriptorType(this.shapeDescriptorTypeRepository.findOne(SystemConstants.SYMBOL_DESCRIPTOR_TYPE));
@@ -72,8 +96,21 @@ public class ShapeContextServiceProvider {
 		return sDescriptor;
 	}
 	
+	public ShapeDescriptor generateShapeDescriptor(Expression e, UserParameter parameters){
+		ShapeDescriptor sDescriptor = new ShapeDescriptor();
+		sDescriptor.setShapeDescriptorType(this.shapeDescriptorTypeRepository.findOne(SystemConstants.EXPRESSION_STROKE_CENTROID_DESCRIPTOR_TYPE));
+		sDescriptor.setExpression(e);
+		
+		Gson gson = new Gson();
+		double[][] scontext = this.evaluateStrokeShapeContextForExpression(e, parameters);
+		
+		sDescriptor.setLenght(scontext.length);
+		sDescriptor.setValues(gson.toJson(scontext));
+		return sDescriptor;
+	}
 	
-	public List<ShapeDescriptor> generateAndSaveShapeDescriptors(List<Symbol> symbols){
+	
+	public List<ShapeDescriptor> generateAndSaveSymbolShapeDescriptors(List<Symbol> symbols){
 	    UserParameter parameters = this.userServiceProvider.getUserParameters();
 	    List<ShapeDescriptor> res = new ArrayList<ShapeDescriptor>();
 	    
@@ -88,20 +125,42 @@ public class ShapeContextServiceProvider {
 	    
 	    this.shapeDescriptorRepository.save(res);
 	    
-	    logger.info(MessageFormat.format("Saved {0} shape descriptors", res.size()));
+	    logger.info(MessageFormat.format("Saved {0} symbol shape descriptors", res.size()));
 	    return res;
 	}
 	
-	public List<ShapeDescriptor> generateAndSaveShapeDescriptorsFromExpressions(List<Expression> expressions){
-	    List<Symbol> symbols = new ArrayList<>();
+	
+	public List<ShapeDescriptor> generateAndSaveExpressionShapeDescriptors(List<Expression> expressions){
+	    UserParameter parameters = this.userServiceProvider.getUserParameters();
+	    List<ShapeDescriptor> res = new ArrayList<ShapeDescriptor>();
+	    
+	    for (Expression expression: expressions) {
+	    	expression.getSymbols();
+	    	res.add(this.generateShapeDescriptor(expression, parameters));
+		}
+	    
+	    this.shapeDescriptorRepository.save(res);
+	    
+	    logger.info(MessageFormat.format("Saved {0} shape expression descriptors", res.size()));
+	    return res;
+	}
+	
+	public List<ShapeDescriptor> generateAndSaveAllShapeDescriptorsFromExpressions(List<Expression> expressions){
+	    List<ShapeDescriptor> res = generateAndSaveExpressionShapeDescriptors(expressions);
+	    res.addAll(generateShapeDescriptorForSymbols(expressions));
+	    return res;
+	}
+
+	private List<ShapeDescriptor> generateShapeDescriptorForSymbols(List<Expression> expressions) {
+		List<Symbol> symbols = new ArrayList<>();
 	    List<ShapeDescriptor> res = null;
 	    
 	    for (Expression expression : expressions) {
 	    	symbols.addAll(expression.getSymbols());
 		}
 	    
-	    res = this.generateAndSaveShapeDescriptors(symbols);
-	    return res;
+	    res = this.generateAndSaveSymbolShapeDescriptors(symbols);
+		return res;
 	}
 	
 }

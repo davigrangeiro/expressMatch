@@ -123,7 +123,7 @@ public class Symbol implements java.io.Serializable {
 	}
 
 
-	@OneToMany(fetch = FetchType.EAGER, mappedBy = "symbol", cascade={CascadeType.PERSIST})
+	@OneToMany(fetch = FetchType.EAGER, mappedBy = "symbol", cascade={CascadeType.ALL})
 	public List<Stroke> getStrokes() {
 		return this.strokes;
 	}

@@ -18,6 +18,7 @@ import br.usp.ime.escience.expressmatch.model.Symbol;
 import br.usp.ime.escience.expressmatch.model.User;
 import br.usp.ime.escience.expressmatch.model.repository.ExpressionRepository;
 import br.usp.ime.escience.expressmatch.model.repository.ExpressionTypeRepository;
+import br.usp.ime.escience.expressmatch.model.repository.SymbolRepository;
 import br.usp.ime.escience.expressmatch.model.repository.UserInfoRepository;
 
 @Service
@@ -34,6 +35,9 @@ public class ExpressionServiceProvider {
 	
 	@Autowired
 	private ExpressionTypeRepository expressionTypeRepository;
+	
+	@Autowired
+	private SymbolRepository symbolRepository;
 	
 	@Autowired
 	private UserInfoRepository userInfoRepository;
@@ -98,10 +102,17 @@ public class ExpressionServiceProvider {
 		return res;
 	}
 
-	public void saveTranscription(Stroke[] strokes, ExpressionType expressionType, User currentUser) throws ExpressMatchExpression {
+	public void saveTranscription(Stroke[] strokes, ExpressionType expressionType, User currentUser, Expression userExpression) throws ExpressMatchExpression {
 		try {
 			
-			Expression e = new Expression();
+			Expression e = null;
+			if (null != userExpression){
+				e = userExpression;
+			} else {
+				e = new Expression();
+			}
+			cleanExpressionData(e);
+			
 			e.setExpressionType(this.expressionTypeRepository.findOne(expressionType.getId()));
 			e.setLabel(NOT_EVALUATED_YET);
 			e.setUserInfo(this.userInfoRepository.getUserInfoByUserNick(currentUser.getNick()));
@@ -133,7 +144,7 @@ public class ExpressionServiceProvider {
 			}
 			
 			e.getSymbols().add(s);
-
+			
 			this.expressionRepository.save(e);
 			
 			logger.info(MessageFormat.format("Saved expression with id {0}", e.getId()));
@@ -142,6 +153,12 @@ public class ExpressionServiceProvider {
 			e.printStackTrace();
 			logger.error(e.getMessage(), e);
 			throw new ExpressMatchExpression(MessageFormat.format("There was an error while saving the transcription of expression type {0}.", expressionType.getId()));
+		}
+	}
+
+	private void cleanExpressionData(Expression expression) {
+		for (Symbol s: expression.getSymbols()) {
+			symbolRepository.delete(s.getId());
 		}
 	}
 	

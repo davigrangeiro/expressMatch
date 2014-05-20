@@ -109,7 +109,7 @@ public class EMGTDomReaderUtil {
 				if(EMGTDomReaderUtil.EXPRESSIION.equalsIgnoreCase(type) &&
 						  e.getFirstChild() != null && e.getFirstChild().getNodeValue() != null){
 					eType.setId(Integer.valueOf(e.getFirstChild().getNodeValue()));
-					ret.setExpressionId(Integer.valueOf(e.getFirstChild().getNodeValue()));
+					ret.setExpressionTransientId(Integer.valueOf(e.getFirstChild().getNodeValue()));
 				}else if(EMGTDomReaderUtil.WRITER.equalsIgnoreCase(type) &&
 						  e.getFirstChild() != null && e.getFirstChild().getNodeValue() != null){
 					user.setName(e.getFirstChild().getNodeValue());

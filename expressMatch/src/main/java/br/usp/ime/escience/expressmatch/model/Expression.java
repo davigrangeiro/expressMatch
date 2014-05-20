@@ -33,7 +33,7 @@ public class Expression implements java.io.Serializable {
 	private Set<ShapeDescriptor> shapeDescriptors = new HashSet<>(0);
 	private List<Symbol> symbols = new ArrayList<>(0);
 
-	private Integer expressionId;
+	private Integer expressionTransientId;
 	
 	private Point ltPoint;
 	private Point rbPoint;
@@ -113,7 +113,7 @@ public class Expression implements java.io.Serializable {
 		this.label = label;
 	}
 
-	@OneToMany(fetch = FetchType.EAGER, mappedBy = "expression", cascade={CascadeType.PERSIST})
+	@OneToMany(fetch = FetchType.EAGER, mappedBy = "expression", cascade={CascadeType.PERSIST, CascadeType.MERGE})
 	public List<Symbol> getSymbols() {
 		return this.symbols;
 	}
@@ -197,15 +197,15 @@ public class Expression implements java.io.Serializable {
 	 * @return the expressionId
 	 */
 	@Transient
-	public Integer getExpressionId() {
-		return expressionId;
+	public Integer getExpressionTransientId() {
+		return expressionTransientId;
 	}
 
 	/**
 	 * @param expressionId the expressionId to set
 	 */
-	public void setExpressionId(Integer expressionId) {
-		this.expressionId = expressionId;
+	public void setExpressionTransientId(Integer expressionId) {
+		this.expressionTransientId = expressionId;
 	}
 
 	/* (non-Javadoc)
@@ -217,7 +217,7 @@ public class Expression implements java.io.Serializable {
 		builder.append("Expression [id=").append(id).append(", userInfo=")
 				.append(userInfo).append(", expressionType=")
 				.append(expressionType).append(", label=").append(label)
-				.append(", expressionId=").append(expressionId).append("]");
+				.append(", expressionId=").append(expressionTransientId).append("]");
 		return builder.toString();
 	}
 

@@ -48,6 +48,23 @@ public class Stroke implements java.io.Serializable {
 			this.points.add(new Point(p));
 		}
 	}
+	
+	@Transient
+	public Point getRepresentantPointOfStroke(){
+		Point res = new Point();
+		
+		if (null == ltPoint || null == ltPoint){
+			
+			for (int i = 0; i < this.points.size(); i++) {
+				this.addCheckingBoundingBox(this.points.remove(0));
+			}
+		}
+		
+		res.setX(this.ltPoint.getX() + (Math.abs(this.ltPoint.getX() + this.rbPoint.getX())/2));
+		res.setX(this.rbPoint.getY() + (Math.abs(this.ltPoint.getY() + this.rbPoint.getX())/2));
+		
+		return res;
+	}
 
 	public Stroke(Symbol symbol) {
 		this.symbol = symbol;
@@ -62,7 +79,7 @@ public class Stroke implements java.io.Serializable {
 	
 	@Transient
     public boolean addCheckingBoundingBox(Point e) {
-        if(this.getPoints().isEmpty()){
+        if(this.getPoints().isEmpty() || null == ltPoint || null == rbPoint){
             //The first Point2D added will be
             //the left-top and the right-bottom Point2D
             ltPoint = new Point(e);
@@ -121,7 +138,7 @@ public class Stroke implements java.io.Serializable {
 		this.rbPoint = rbPoint;
 	}
 
-	@OneToMany(fetch = FetchType.EAGER, mappedBy = "stroke", cascade={CascadeType.PERSIST})
+	@OneToMany(fetch = FetchType.EAGER, mappedBy = "stroke", cascade=CascadeType.ALL)
 	public List<Point> getPoints() {
 		return this.points;
 	}

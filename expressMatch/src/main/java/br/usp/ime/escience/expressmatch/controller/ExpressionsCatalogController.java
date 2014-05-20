@@ -70,15 +70,18 @@ public class ExpressionsCatalogController implements Serializable{
 	}
 
 	private void loadExpressionType(int index) {
-		ExpressionType type = this.types.get(index);
+		if(types != null && index < types.size()){
+		
+			ExpressionType type = this.types.get(index);
 	
-		this.expression = this.expressionServiceProvider.loadExpressionForExpressionType(type);
-		
-		Stroke[] modelStrokes = getStrokesForExpression(expression);
-		
-		setJsonString(this.getStrokeParser().toJSON(modelStrokes));
-		
-		assembleExpressionDataTree(this.expression);
+			this.expression = this.expressionServiceProvider.loadExpressionForExpressionType(type);
+			
+			Stroke[] modelStrokes = getStrokesForExpression(expression);
+			
+			setJsonString(this.getStrokeParser().toJSON(modelStrokes));
+			
+			assembleExpressionDataTree(this.expression);
+		}
 	}
 
 	private void assembleExpressionDataTree(Expression e) {

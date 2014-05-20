@@ -67,7 +67,7 @@ public class InkmlImportServiceProvider {
 		
 		LIST_OF_EXPRESSIONS: for (Expression expression : expressions) {
 			for (ExpressionType rootExpression : models) {
-				if(expression.getExpressionId().intValue() == rootExpression.getId()){
+				if(expression.getExpressionTransientId().intValue() == rootExpression.getId()){
 					expression.setExpressionType(rootExpression);
 					
 					if(ROOT_NICK.equalsIgnoreCase(expression.getUserInfo().getUser().getNick())){
@@ -82,7 +82,7 @@ public class InkmlImportServiceProvider {
 		expressionProvider.saveExpressions(expressions);
 		expressionProvider.saveExpressionTypes(models);
 		
-		shapeContextServiceProvider.generateAndSaveShapeDescriptorsFromExpressions(expressions);
+		shapeContextServiceProvider.generateAndSaveAllShapeDescriptorsFromExpressions(expressions);
 	}
 	
 }

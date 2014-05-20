@@ -2,18 +2,22 @@
 <web-app id="WebApp_ID" version="2.5"
 	xmlns="http://java.sun.com/xml/ns/javaee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd">
+	
 	<!-- Context Path -->
 	<display-name>expressMatch</display-name>
+	
 	<!-- Spring Security Settings -->
 	<context-param>
 		<param-name>contextConfigLocation</param-name>
 		<param-value>/WEB-INF/applicationContext.xml,
 	        		 /WEB-INF/applicationContext-security.xml</param-value>
 	</context-param>
+	
 	<context-param>
 		<param-name>javax.faces.PROJECT_STAGE</param-name>
 		<param-value>Development</param-value>
 	</context-param>
+	
 	<!-- JSF Settings -->
 	<context-param>
 		<description>State saving method: 'client' or 'server' (=default). See
@@ -21,11 +25,20 @@
 		<param-name>javax.faces.STATE_SAVING_METHOD</param-name>
 		<param-value>client</param-value>
 	</context-param>
+	
 	<!-- JSTL Settings -->
 	<context-param>
 		<param-name>javax.servlet.jsp.jstl.fmt.localizationContext</param-name>
 		<param-value>resources.application</param-value>
 	</context-param>
+	
+	<!-- Primefaces theme settings 
+	<context-param>
+		<param-name>primefaces.THEME</param-name>
+		<param-value>eggplant</param-value>
+	</context-param>
+	-->
+	
 	<!-- Spring Security Filters -->
 	<filter>
 		<filter-name>springSecurityFilterChain</filter-name>
@@ -35,6 +48,7 @@
 		<filter-name>springSecurityFilterChain</filter-name>
 		<url-pattern>/*</url-pattern>
 	</filter-mapping>
+	
 	<!-- Spring Loader Listeners -->
 	<listener>
 		<listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
@@ -42,10 +56,12 @@
 	<listener>
 		<listener-class>org.springframework.web.context.request.RequestContextListener</listener-class>
 	</listener>
+	
 	<!-- Faces Listener -->
 	<listener>
 		<listener-class>com.sun.faces.config.ConfigureListener</listener-class>
 	</listener>
+	
 	<!-- JSF Faces -->
 	<servlet>
 		<servlet-name>facesServlet</servlet-name>
@@ -64,6 +80,7 @@
 		<servlet-name>facesServlet</servlet-name>
 		<url-pattern>*.xhtml</url-pattern>
 	</servlet-mapping>
+	
 	<!-- Welcome Files -->
 	<welcome-file-list>
 		<welcome-file>/unsecure/login/login.faces</welcome-file>

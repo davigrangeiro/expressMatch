@@ -12,7 +12,7 @@
     <!-- Configure filter -->
     <http auto-config="true" use-expressions="true"> 
  
-        <!-- Don't set any role restrictions on login.jsp -->
+        <!-- Don't set any role restrictions on login -->
         <intercept-url pattern="/unsecure/login/login.faces" 
         			   access="permitAll"/>
         			   

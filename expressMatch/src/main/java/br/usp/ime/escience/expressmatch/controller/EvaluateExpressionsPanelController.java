@@ -3,7 +3,8 @@ package br.usp.ime.escience.expressmatch.controller;
 import java.io.Serializable;
 import java.util.List;
 
-import javax.annotation.PostConstruct;
+import javax.faces.application.FacesMessage;
+import javax.faces.application.FacesMessage.Severity;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
@@ -13,6 +14,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import br.usp.ime.escience.expressmatch.exception.ExpressMatchExpression;
 import br.usp.ime.escience.expressmatch.model.Expression;
 import br.usp.ime.escience.expressmatch.model.ExpressionType;
 import br.usp.ime.escience.expressmatch.model.Stroke;
@@ -25,6 +27,8 @@ import br.usp.ime.escience.expressmatch.service.gson.generic.StrokeJSONParser;
 @ManagedBean
 @ViewScoped
 public class EvaluateExpressionsPanelController implements Serializable{
+
+	private static final int NOT_STARTED_YET = -1;
 
 	private static final long serialVersionUID = 1L;
 
@@ -47,7 +51,9 @@ public class EvaluateExpressionsPanelController implements Serializable{
 	
 	private List<ExpressionType> types;
 	
-	private int eTypeIndex = 0;
+	private Expression userExpression;
+	
+	private int eTypeIndex = NOT_STARTED_YET;
 
 	public EvaluateExpressionsPanelController() {
 		super();
@@ -62,12 +68,24 @@ public class EvaluateExpressionsPanelController implements Serializable{
 		try {
 			parseJsonString(jsonString);
 			
-			this.expressionServiceProvider.saveTranscription(this.strokes, this.types.get(this.eTypeIndex), this.userController.getUser());
+			if (null != this.strokes && this.strokes.length > 0) {
+				this.expressionServiceProvider.saveTranscription(this.strokes, this.types.get(this.eTypeIndex), this.userController.getUser(), this.userExpression);
+				addMessage("Success", "Your transcription was successfully saved", null);
+			} else {
+				addMessage("Warning", "You should transcribe the expression before save.", FacesMessage.SEVERITY_WARN);
+			}
 			
-		} catch (Exception e) {
+		} catch (ExpressMatchExpression e){
 			logger.error(e.getMessage(), e);
-			
-			//TODO: ADD ERROR MESSAGE
+
+			addMessage("Error", e.getMessage(), FacesMessage.SEVERITY_ERROR);
+		}
+		catch (Exception e) {
+			logger.error(e.getMessage(), e);
+
+			addMessage("Error", "There was an error while saving the transcription", FacesMessage.SEVERITY_ERROR);
+		} finally {
+			loadExpressionType(eTypeIndex, this.userController.getUser());
 		}
 		return "";
 	}
@@ -77,31 +95,34 @@ public class EvaluateExpressionsPanelController implements Serializable{
 		setStrokes(this.getStrokeParser().arrayFromJSON(jsonString));
     }
 	
-	@PostConstruct
 	public void init() {
-		FacesContext.getCurrentInstance().getExternalContext().getSession(true);
-		types = this.expressionServiceProvider.loadExpressionTypes();
-		
-		eTypeIndex = 0;
-		loadExpressionType(eTypeIndex, this.userController.getUser());
+		if(NOT_STARTED_YET == eTypeIndex){
+			FacesContext.getCurrentInstance().getExternalContext().getSession(true);
+			types = this.expressionServiceProvider.loadExpressionTypes();
+			
+			eTypeIndex = 0;
+			loadExpressionType(eTypeIndex, this.userController.getUser());
+		}
 	}
 
 	private void loadExpressionType(int index, User user) {
-		ExpressionType type = this.types.get(index);
-	
-		Stroke[] modelStrokes = getStrokesForExpression(this.expressionServiceProvider.loadExpressionForExpressionType(type));
+		if(types != null && index < types.size()) {
+			
+			ExpressionType type = this.types.get(index);
 		
-		setJsonLoadString(this.getStrokeParser().toJSON(modelStrokes));
-		
-		cleanTranscriptionData();
-		Stroke[] userEMStrokes;
-		Expression userExpression = getUserExpression(user, type);
-		
-		if(null != userExpression){
-			userEMStrokes = getStrokesForExpression(userExpression);
-			setJsonString(this.getStrokeParser().toJSON(userEMStrokes));
+			Stroke[] modelStrokes = getStrokesForExpression(this.expressionServiceProvider.loadExpressionForExpressionType(type));
+			
+			setJsonLoadString(this.getStrokeParser().toJSON(modelStrokes));
+			
+			cleanTranscriptionData();
+			Stroke[] userEMStrokes;
+			userExpression = getUserExpression(user, type);
+			
+			if(null != userExpression){
+				userEMStrokes = getStrokesForExpression(userExpression);
+				setJsonString(this.getStrokeParser().toJSON(userEMStrokes));
+			}
 		}
-		
 	}
 	
 	public String nextEM(){
@@ -112,7 +133,7 @@ public class EvaluateExpressionsPanelController implements Serializable{
 	}
 	
 	public String previousEM(){
-		eTypeIndex = (0 == eTypeIndex) ? types.size()-1: eTypeIndex - 1;
+		eTypeIndex = (0 >= eTypeIndex) ? types.size()-1: eTypeIndex - 1;
 		loadExpressionType(eTypeIndex, this.userController.getUser());
 		
 		return "";
@@ -140,6 +161,16 @@ public class EvaluateExpressionsPanelController implements Serializable{
 			}
 		}
 		return modelStrokes;
+	}
+	
+	public void addMessage(String header, String desc, Severity severity){
+		FacesContext context = FacesContext.getCurrentInstance();
+        
+		if(null == severity){
+			severity = FacesMessage.SEVERITY_INFO;
+		}
+		
+		context.addMessage(null, new FacesMessage(severity, header, desc));
 	}
 
 	/**

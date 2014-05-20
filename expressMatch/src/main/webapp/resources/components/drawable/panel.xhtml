@@ -40,8 +40,7 @@
 
 	<p:panel id="panel#{cc.attrs.id}"
 		style="width: #{cc.attrs.width + 50}px !important; position: relative;"
-		header="#{cc.attrs.name}" toggleable="#{not cc.attrs.drawable}"
-		toggleSpeed="500"
+		header="#{cc.attrs.name}" 
 		collapsed="#{(!cc.attrs.drawable and (empty cc.attrs.jsonVar))}">
 
 		<h:form id="dpForm#{cc.attrs.id}">

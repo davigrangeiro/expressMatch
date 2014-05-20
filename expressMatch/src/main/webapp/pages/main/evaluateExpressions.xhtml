@@ -1,18 +1,24 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml"
-	xmlns:h="http://java.sun.com/jsf/html"
-      xmlns:ui="http://java.sun.com/jsf/facelets" 
-	xmlns:f="http://java.sun.com/jsf/core"
-	xmlns:composite="http://java.sun.com/jsf/composite"
-	xmlns:dp="http://java.sun.com/jsf/composite/components/drawable"
-    xmlns:p="http://primefaces.org/ui">
+<html   xmlns="http://www.w3.org/1999/xhtml"
+		xmlns:h="http://java.sun.com/jsf/html"
+	    xmlns:ui="http://java.sun.com/jsf/facelets" 
+		xmlns:f="http://java.sun.com/jsf/core"
+		xmlns:composite="http://java.sun.com/jsf/composite"
+		xmlns:dp="http://java.sun.com/jsf/composite/components/drawable"
+	    xmlns:p="http://primefaces.org/ui">
+    
     <h:body>
- 
+ 		
     	<ui:composition template="/pages/main/template/template.xhtml">
  
     		<ui:define name="content">
+    			
+    			<h:form>
+        			<f:event type="preRenderView" listener="#{evaluateExpressionsPanelController.init}" />
+    			</h:form>	
+		    		
     			<h2>Transcribe expressions</h2>
 
 				<dp:panel id="MyDP01" width="400" height="180" drawable="false"
